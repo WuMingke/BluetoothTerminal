@@ -42,22 +42,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     protected void initEventAndData() {
+
         deviceBean = (DeviceBean) getIntent().getBundleExtra(Constants.DEVICE_BEAN).getParcelable(Constants.DEVICE_BEAN);
         BluetoothAdapter defaultAdapter = BluetoothAdapter.getDefaultAdapter();
         BluetoothDevice remoteDevice = defaultAdapter.getRemoteDevice(deviceBean.getMac());
-        try {
-            socket = remoteDevice.createRfcommSocketToServiceRecord(UUID.fromString(Constants.UUID));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         defaultAdapter.cancelDiscovery();
         try {
+            socket = remoteDevice.createInsecureRfcommSocketToServiceRecord(UUID.fromString(Constants.UUID));
             socket.connect();
             outputStream = socket.getOutputStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @OnClick({R.id.back, R.id.open, R.id.close})
@@ -68,8 +64,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 break;
             case R.id.open:
                 try {
-                    outputStream.write(open);
-                    outputStream.flush();
+                    if (outputStream != null) {
+                        outputStream.write(open);
+                        outputStream.flush();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -77,8 +75,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 break;
             case R.id.close:
                 try {
-                    outputStream.write(close);
-                    outputStream.flush();
+                    if (outputStream != null) {
+                        outputStream.write(close);
+                        outputStream.flush();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -87,7 +87,26 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         }
     }
 
-    public void openFirst(View view) {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (outputStream != null) {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /*    public void openFirst(View view) {
         try {
             outputStream.write(new byte[]{(byte) 0XA1});
             outputStream.flush();
@@ -121,5 +140,5 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

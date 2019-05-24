@@ -63,11 +63,8 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         }
 
         bluetoothDiscovery = new BluetoothDiscovery();
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        registerReceiver(bluetoothDiscovery, filter);
-        //注册一个搜索结束时的广播
-        IntentFilter filter2 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        registerReceiver(bluetoothDiscovery, filter2);
+
+        register();
 
         hasBondList = new ArrayList<>();
         hasBondRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -82,10 +79,32 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         notBondRecycler.setAdapter(notBondAdapter);
     }
 
+    private void register() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
+        intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(bluetoothDiscovery, intentFilter);
+    }
+
     @OnClick({R.id.search})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.search:
+                register();
+                if (hasBondAdapter.getData().size() != 0) {
+                    for (int i = 0; i < hasBondAdapter.getData().size(); i++) {
+                        hasBondAdapter.remove(i);
+                    }
+                }
+
+                if (notBondAdapter.getData().size() != 0) {
+                    for (int i = 0; i < notBondAdapter.getData().size(); i++) {
+                        notBondAdapter.remove(i);
+                    }
+                }
+
                 if (bluetoothAdapter.isEnabled()) {
                     showToast("正在搜索");
                     bluetoothAdapter.startDiscovery();
@@ -98,7 +117,6 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
         if (adapter == hasBondAdapter) {
             Intent intent = new Intent(this, MainActivity.class);
             Bundle bundle = new Bundle();
@@ -126,17 +144,14 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
                     DeviceBean deviceBean = new DeviceBean(device.getName(), device.getAddress());
                     hasBondList.add(deviceBean);
                     hasBondAdapter.setNewData(hasBondList);
-                    //  info.append(device.getName() + "==>" + device.getAddress() + "\n");
-                } else if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
+                } else {
                     DeviceBean deviceBean = new DeviceBean(device.getName(), device.getAddress());
                     notBondList.add(deviceBean);
                     notBondAdapter.setNewData(notBondList);
-                    // info2.append(device.getName() + "==>" + device.getAddress() + "\n");
-                } else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {
-                    //  info2.append("搜索完成");
-                    showToast("搜索完成");
-
                 }
+            } else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {
+                showToast("搜索完成");
+                unregisterReceiver(bluetoothDiscovery);
             }
         }
     }
