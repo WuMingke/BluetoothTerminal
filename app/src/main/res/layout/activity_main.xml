@@ -39,39 +39,83 @@
                     android:src="@drawable/search" />-->
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/orderTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="返回的指令：" />
+
+    <TextView
+        android:id="@+id/order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <View
+        android:id="@+id/viewLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/line" />
+
     <Button
         android:id="@+id/open"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="open" />
+        android:text="open"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/close"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="close" />
+        android:text="close"
+        android:textAllCaps="false" />
 
-<!--    <Button
-        android:text="open First"
-        android:onClick="openFirst"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <Button
-        android:text="close First"
-        android:onClick="closeFirst"
+        android:id="@+id/handOpen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="handOpen"
+        android:textAllCaps="false" />
 
     <Button
-        android:text="open Second"
-        android:onClick="openSecond"
+        android:id="@+id/handClose"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="handClose"
+        android:textAllCaps="false" />
+
+    <TextView
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:text="close Second"
-        android:onClick="closeSecond"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />-->
+    <!--    <Button
+            android:text="open First"
+            android:onClick="openFirst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="close First"
+            android:onClick="closeFirst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="open Second"
+            android:onClick="openSecond"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="close Second"
+            android:onClick="closeSecond"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />-->
 </LinearLayout>

@@ -20,6 +20,7 @@ import com.whosssmade.bluetoothterminal.business.presenter.SearchPresenter;
 import com.whosssmade.bluetoothterminal.model.bean.DeviceBean;
 import com.whosssmade.bluetoothterminal.model.constant.Constants;
 import com.whosssmade.bluetoothterminal.ui.adapters.DeviceAdapter;
+import com.whosssmade.bluetoothterminal.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
