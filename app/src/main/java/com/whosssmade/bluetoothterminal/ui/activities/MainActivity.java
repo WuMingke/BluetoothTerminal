@@ -3,8 +3,10 @@ package com.whosssmade.bluetoothterminal.ui.activities;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,21 +20,26 @@ import com.whosssmade.bluetoothterminal.business.contract.MainContract;
 import com.whosssmade.bluetoothterminal.business.presenter.MainPresenter;
 import com.whosssmade.bluetoothterminal.business.presenter.SearchPresenter;
 import com.whosssmade.bluetoothterminal.model.constant.Constants;
+import com.whosssmade.bluetoothterminal.ui.adapters.ItemFragmentPagerAdapter;
+import com.whosssmade.bluetoothterminal.ui.fragments.ItemFragment1;
+import com.whosssmade.bluetoothterminal.ui.fragments.ItemFragment2;
+import com.whosssmade.bluetoothterminal.ui.fragments.ItemFragment3;
 import com.whosssmade.bluetoothterminal.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import butterknife.BindAnim;
 import butterknife.BindView;
 import butterknife.OnClick;
 
 import static java.lang.Thread.sleep;
 
-public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View {
+public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, ViewPager.OnPageChangeListener {
 
     @BindView(R.id.vertical)
     TextView vertical;
@@ -42,6 +49,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @BindView(R.id.viewpager)
     ViewPager viewpager;
+
+    @BindView(R.id.item1)
+    TextView item1;
+
+    @BindView(R.id.item2)
+    TextView item2;
+
+    @BindView(R.id.item3)
+    TextView item3;
 
     private BluetoothDevice deviceBean;
     private BluetoothSocket socket;
@@ -56,6 +72,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     private boolean read = true;
 
+    private ItemFragmentPagerAdapter pagerAdapter;
+
     @Override
     protected int getLayout() {
         return R.layout.activity_main;
@@ -69,7 +87,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @Override
     protected void initEventAndData() {
 
-        deviceBean = getIntent().getParcelableExtra(Constants.DEVICE_BEAN);
+    /*    deviceBean = getIntent().getParcelableExtra(Constants.DEVICE_BEAN);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -106,16 +124,26 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                     e.printStackTrace();
                 }
             }
-        }).start();
+        }).start();*/
 
-
-
-
-
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(new ItemFragment1());
+        fragments.add(new ItemFragment2());
+        fragments.add(new ItemFragment3());
+        pagerAdapter = new ItemFragmentPagerAdapter(fragments, getSupportFragmentManager());
+        viewpager.setAdapter(pagerAdapter);
+        viewpager.setOnPageChangeListener(this);
+        viewpager.setCurrentItem(0);
+        item1.setTextColor(Color.WHITE);
+        item1.setBackgroundColor(getResources().getColor(R.color.tips_blue));
+        item2.setTextColor(Color.BLACK);
+        item2.setBackgroundColor(Color.WHITE);
+        item3.setTextColor(Color.BLACK);
+        item3.setBackgroundColor(Color.WHITE);
     }
 
 
-    @OnClick({R.id.back, R.id.verticalBtn, R.id.horizontalBtn})
+    @OnClick({R.id.back, R.id.verticalBtn, R.id.horizontalBtn, R.id.item1, R.id.item2, R.id.item3})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.verticalBtn://上下回原点
@@ -126,6 +154,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             case R.id.back:
                 finish();
                 break;
+            case R.id.item1:
+                viewpager.setCurrentItem(0);
+                break;
+            case R.id.item2:
+                viewpager.setCurrentItem(1);
+                break;
+            case R.id.item3:
+                viewpager.setCurrentItem(2);
+                break;
+
 
         }
     }
@@ -174,5 +212,44 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         byte[] bytes = new byte[len];
         inputStream.read(bytes);
         return bytes;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        viewpager.setCurrentItem(position);
+        if (position == 0) {
+            item1.setTextColor(Color.WHITE);
+            item1.setBackgroundColor(getResources().getColor(R.color.tips_blue));
+            item2.setTextColor(Color.BLACK);
+            item2.setBackgroundColor(Color.WHITE);
+            item3.setTextColor(Color.BLACK);
+            item3.setBackgroundColor(Color.WHITE);
+        }
+        if (position == 1) {
+            item2.setTextColor(Color.WHITE);
+            item2.setBackgroundColor(getResources().getColor(R.color.tips_blue));
+            item1.setTextColor(Color.BLACK);
+            item1.setBackgroundColor(Color.WHITE);
+            item3.setTextColor(Color.BLACK);
+            item3.setBackgroundColor(Color.WHITE);
+        }
+        if (position == 2) {
+            item3.setTextColor(Color.WHITE);
+            item3.setBackgroundColor(getResources().getColor(R.color.tips_blue));
+            item2.setTextColor(Color.BLACK);
+            item2.setBackgroundColor(Color.WHITE);
+            item1.setTextColor(Color.BLACK);
+            item1.setBackgroundColor(Color.WHITE);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }
