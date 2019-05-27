@@ -135,7 +135,7 @@ public class Utils {
     public static String bytesToHexString2(byte[] bytes) {
         StringBuilder stringBuilder = new StringBuilder(bytes.length * 2);
         for (byte b : bytes) {
-            stringBuilder.append(String.format("%02x", new Integer(b & 0xff)));
+            stringBuilder.append(String.format("%02x", new Integer(b & 0xff))+" ");
         }
         return stringBuilder.toString();
     }
