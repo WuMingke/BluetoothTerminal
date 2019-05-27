@@ -4,8 +4,10 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,10 +16,10 @@ import com.whosssmade.bluetoothterminal.base.BaseActivity;
 import com.whosssmade.bluetoothterminal.business.contract.MainContract;
 import com.whosssmade.bluetoothterminal.business.presenter.MainPresenter;
 import com.whosssmade.bluetoothterminal.business.presenter.SearchPresenter;
-import com.whosssmade.bluetoothterminal.model.bean.DeviceBean;
 import com.whosssmade.bluetoothterminal.model.constant.Constants;
 import com.whosssmade.bluetoothterminal.utils.Utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -35,7 +37,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @BindView(R.id.test)
     TextView test;
 
-    private DeviceBean deviceBean;
+    private BluetoothDevice deviceBean;
     private BluetoothSocket socket;
     private byte[] open = new byte[]{0x55, 0x01, 0x01, 0x02, 0x00, 0x00, 0x00, (byte) 0x59};
     private byte[] close = new byte[]{0x55, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, (byte) 0x58};
@@ -47,8 +49,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private InputStream inputStream;
 
     private int readBufferPosition;
-    private boolean stopWorker;
+    private boolean read = true;
     private byte[] readBuffer;
+
+    private Handler handler;
+    private StringBuffer stringBuffer;
+    private byte[] packetBytes;
 
     @Override
     protected int getLayout() {
@@ -67,65 +73,61 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
         byte[] bytes = Utils.calcCrc16(handOpen);
 
-        String s = Utils.bytesToHexString(bytes);
+        String s = Utils.bytesToHexString2(bytes);
         test.setText(s);
 
 
-        deviceBean = (DeviceBean) getIntent().getBundleExtra(Constants.DEVICE_BEAN).getParcelable(Constants.DEVICE_BEAN);
-        BluetoothAdapter defaultAdapter = BluetoothAdapter.getDefaultAdapter();
-        BluetoothDevice remoteDevice = defaultAdapter.getRemoteDevice(deviceBean.getMac());
-        defaultAdapter.cancelDiscovery();
-        try {
-            socket = remoteDevice.createInsecureRfcommSocketToServiceRecord(UUID.fromString(Constants.UUID));
-            socket.connect();
-            outputStream = socket.getOutputStream();
-            inputStream = socket.getInputStream();
-            beginListenForData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void beginListenForData() {
-        final Handler handler = new Handler();
-        final byte delimiter = 10; //This is the ASCII code for a newline character
-        stopWorker = false;
-        readBuffer = new byte[1024];
+        deviceBean = getIntent().getParcelableExtra(Constants.DEVICE_BEAN);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (!Thread.currentThread().isInterrupted() && !stopWorker) {
-                    try {
-                        int bytesAvailable = inputStream.available();
-                        if (bytesAvailable > 0) {
-                            byte[] packetBytes = new byte[bytesAvailable];
-                            inputStream.read(packetBytes);
-                            for (int i = 0; i < bytesAvailable; i++) {
-                                byte b = packetBytes[i];
-                                if (b == delimiter) {
-                                    byte[] encodedBytes = new byte[readBufferPosition];
-                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
-                                    final String data = new String(encodedBytes, "US-ASCII");
-                                    readBufferPosition = 0;
-
-                                    handler.post(new Runnable() {
-                                        public void run() {
-                                            order.append(data+"\n");
-                                        }
-                                    });
-                                } else {
-                                    readBuffer[readBufferPosition++] = b;
-                                }
-                            }
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        stopWorker = true;
+                try {
+                    socket = deviceBean.createInsecureRfcommSocketToServiceRecord(UUID.fromString(Constants.UUID));
+                    while (!socket.isConnected()) {
+                        socket.connect();
                     }
+                    if (socket != null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showToast("已建立蓝牙连接");
+                            }
+                        });
+
+                        outputStream = socket.getOutputStream();
+                        inputStream = socket.getInputStream();
+                    }
+                    while (read) {
+                        byte[] bytes = readInputStream(inputStream);
+                        Log.i("wmk", "----------" + Utils.bytesToHexString2(bytes));
+                        //Log.i("wmk",new String("%04x",bytes));
+                        final String s = Utils.bytesToHexString2(bytes);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                order.append(s + "\n");
+                            }
+                        });
+                    }
+
+                    //beginListenForData();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
 
+    }
+
+    private byte[] readInputStream(InputStream inputStream) throws IOException {
+        int len = 0;
+        while (len == 0) {
+            len = inputStream.available();
+        }
+        byte[] bytes = new byte[len];
+        inputStream.read(bytes);
+        return bytes;
     }
 
     @OnClick({R.id.back, R.id.open, R.id.close, R.id.handOpen, R.id.handClose})
@@ -182,7 +184,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopWorker = true;
+        read = false;
         if (socket != null) {
             try {
                 socket.close();
@@ -193,6 +195,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         if (outputStream != null) {
             try {
                 outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (inputStream != null) {
+            try {
+                inputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

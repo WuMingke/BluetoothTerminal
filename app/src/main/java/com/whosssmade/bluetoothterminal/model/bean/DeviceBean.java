@@ -1,13 +1,16 @@
+/*
 package com.whosssmade.bluetoothterminal.model.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+*/
 /**
  * Created by Administrator on 2019/5/24.
- */
+ *//*
 
-public class DeviceBean implements Parcelable{
+
+public class DeviceBean implements Parcelable {
     private String name;
     private String mac;
 
@@ -60,3 +63,4 @@ public class DeviceBean implements Parcelable{
         }
     };
 }
+*/

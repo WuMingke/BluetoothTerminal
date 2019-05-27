@@ -17,7 +17,6 @@ import com.whosssmade.bluetoothterminal.R;
 import com.whosssmade.bluetoothterminal.base.BaseActivity;
 import com.whosssmade.bluetoothterminal.business.contract.SearchContract;
 import com.whosssmade.bluetoothterminal.business.presenter.SearchPresenter;
-import com.whosssmade.bluetoothterminal.model.bean.DeviceBean;
 import com.whosssmade.bluetoothterminal.model.constant.Constants;
 import com.whosssmade.bluetoothterminal.ui.adapters.DeviceAdapter;
 import com.whosssmade.bluetoothterminal.utils.Utils;
@@ -43,7 +42,8 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothDiscovery bluetoothDiscovery;
     private DeviceAdapter hasBondAdapter, notBondAdapter;
-    private List<DeviceBean> hasBondList, notBondList;
+    private List<BluetoothDevice> hasBondList, notBondList;
+    private BluetoothDevice bondDevice;
 
     @Override
     protected int getLayout() {
@@ -120,9 +120,9 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == hasBondAdapter) {
             Intent intent = new Intent(this, MainActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.DEVICE_BEAN, hasBondAdapter.getData().get(position));
-            intent.putExtra(Constants.DEVICE_BEAN, bundle);
+            intent.putExtra(Constants.DEVICE_BEAN, hasBondAdapter.getData().get(position));
+            bluetoothAdapter.cancelDiscovery();
+           // unregisterReceiver(bluetoothDiscovery);
             startActivity(intent);
         }
 
@@ -142,12 +142,12 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
             if (action.equals(BluetoothDevice.ACTION_FOUND)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-                    DeviceBean deviceBean = new DeviceBean(device.getName(), device.getAddress());
-                    hasBondList.add(deviceBean);
+                    // DeviceBean deviceBean = new DeviceBean(device.getName(), device.getAddress());
+                    hasBondList.add(device);
                     hasBondAdapter.setNewData(hasBondList);
                 } else {
-                    DeviceBean deviceBean = new DeviceBean(device.getName(), device.getAddress());
-                    notBondList.add(deviceBean);
+                    //  DeviceBean deviceBean = new DeviceBean(device.getName(), device.getAddress());
+                    notBondList.add(device);
                     notBondAdapter.setNewData(notBondList);
                 }
             } else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {
