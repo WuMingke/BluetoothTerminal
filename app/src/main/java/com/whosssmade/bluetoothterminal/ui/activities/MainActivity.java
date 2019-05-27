@@ -29,6 +29,8 @@ import butterknife.BindAnim;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static java.lang.Thread.sleep;
+
 public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View {
 
     @BindView(R.id.order)
@@ -48,13 +50,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private OutputStream outputStream = null;
     private InputStream inputStream;
 
-    private int readBufferPosition;
     private boolean read = true;
-    private byte[] readBuffer;
-
-    private Handler handler;
-    private StringBuffer stringBuffer;
-    private byte[] packetBytes;
 
     @Override
     protected int getLayout() {
@@ -73,7 +69,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
         byte[] bytes = Utils.calcCrc16(handOpen);
 
-        String s = Utils.bytesToHexString2(bytes);
+        String s = Utils.bytesToHexString(bytes);
         test.setText(s);
 
 
@@ -99,9 +95,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                     }
                     while (read) {
                         byte[] bytes = readInputStream(inputStream);
-                        Log.i("wmk", "----------" + Utils.bytesToHexString2(bytes));
-                        //Log.i("wmk",new String("%04x",bytes));
-                        final String s = Utils.bytesToHexString2(bytes);
+                        Log.i("wmk", "----------" + Utils.bytesToHexString(bytes));
+                        final String s = Utils.bytesToHexString(bytes);
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -111,7 +106,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                         });
                     }
 
-                    //beginListenForData();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -123,6 +117,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private byte[] readInputStream(InputStream inputStream) throws IOException {
         int len = 0;
         while (len == 0) {
+            if (inputStream.available() <= 0) {
+                continue;
+            } else {
+                try {
+                    sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             len = inputStream.available();
         }
         byte[] bytes = new byte[len];
