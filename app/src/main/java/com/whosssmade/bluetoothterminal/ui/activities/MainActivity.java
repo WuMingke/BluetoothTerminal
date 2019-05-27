@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,11 +34,14 @@ import static java.lang.Thread.sleep;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View {
 
-    @BindView(R.id.order)
-    TextView order;
+    @BindView(R.id.vertical)
+    TextView vertical;
 
-    @BindView(R.id.test)
-    TextView test;
+    @BindView(R.id.horizontal)
+    TextView horizontal;
+
+    @BindView(R.id.viewpager)
+    ViewPager viewpager;
 
     private BluetoothDevice deviceBean;
     private BluetoothSocket socket;
@@ -64,14 +68,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     protected void initEventAndData() {
-
-        byte[] handOpen = new byte[]{0x01, 0x05, 0x00, 0x39, (byte) 0xFF, 0x00};
-
-        byte[] bytes = Utils.calcCrc16(handOpen);
-
-        String s = Utils.bytesToHexString(bytes);
-        test.setText(s);
-
 
         deviceBean = getIntent().getParcelableExtra(Constants.DEVICE_BEAN);
         new Thread(new Runnable() {
@@ -101,7 +97,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                order.append(s + "\n");
+                                //  order.append(s + "\n");
                             }
                         });
                     }
@@ -112,75 +108,25 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
         }).start();
 
+
+
+
+
     }
 
-    private byte[] readInputStream(InputStream inputStream) throws IOException {
-        int len = 0;
-        while (len == 0) {
-            if (inputStream.available() <= 0) {
-                continue;
-            } else {
-                try {
-                    sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            len = inputStream.available();
-        }
-        byte[] bytes = new byte[len];
-        inputStream.read(bytes);
-        return bytes;
-    }
 
-    @OnClick({R.id.back, R.id.open, R.id.close, R.id.handOpen, R.id.handClose})
+    @OnClick({R.id.back, R.id.verticalBtn, R.id.horizontalBtn})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.handOpen:
-                try {
-                    if (outputStream != null) {
-                        outputStream.write(handOpen);
-                        outputStream.flush();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            case R.id.verticalBtn://上下回原点
                 break;
-            case R.id.handClose:
-                try {
-                    if (outputStream != null) {
-                        outputStream.write(handClose);
-                        outputStream.flush();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            case R.id.horizontalBtn://水平回原点
                 break;
+
             case R.id.back:
                 finish();
                 break;
-            case R.id.open:
-                try {
-                    if (outputStream != null) {
-                        outputStream.write(open);
-                        outputStream.flush();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-                break;
-            case R.id.close:
-                try {
-                    if (outputStream != null) {
-                        outputStream.write(close);
-                        outputStream.flush();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                break;
         }
     }
 
@@ -211,39 +157,22 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         }
     }
 
-    /*    public void openFirst(View view) {
-        try {
-            outputStream.write(new byte[]{(byte) 0XA1});
-            outputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private byte[] readInputStream(InputStream inputStream) throws IOException {
+        int len = 0;
+        while (len == 0) {
+            if (inputStream.available() <= 0) {
+                continue;
+            } else {
+                try {
+                    sleep(80);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            len = inputStream.available();
         }
+        byte[] bytes = new byte[len];
+        inputStream.read(bytes);
+        return bytes;
     }
-
-    public void closeFirst(View view) {
-        try {
-            outputStream.write(new byte[]{(byte) 0XB1});
-            outputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void openSecond(View view) {
-        try {
-            outputStream.write(new byte[]{(byte) 0XA2});
-            outputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void closeSecond(View view) {
-        try {
-            outputStream.write(new byte[]{(byte) 0XB2});
-            outputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
 }

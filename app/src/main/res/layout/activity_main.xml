@@ -39,83 +39,83 @@
                     android:src="@drawable/search" />-->
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/orderTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:text="返回的指令：" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/order"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
-
-    <View
-        android:id="@+id/viewLine"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/line" />
-
-    <Button
-        android:id="@+id/open"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="open"
-        android:textAllCaps="false" />
-
-    <Button
-        android:id="@+id/close"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="close"
-        android:textAllCaps="false" />
-
-
-    <Button
-        android:id="@+id/handOpen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="handOpen"
-        android:textAllCaps="false" />
-
-    <Button
-        android:id="@+id/handClose"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="handClose"
-        android:textAllCaps="false" />
-
-    <TextView
-        android:id="@+id/test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <!--    <Button
-            android:text="open First"
-            android:onClick="openFirst"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <Button
-            android:text="close First"
-            android:onClick="closeFirst"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="上下脉冲量" />
 
-        <Button
-            android:text="open Second"
-            android:onClick="openSecond"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center" />
 
-        <Button
-            android:text="close Second"
-            android:onClick="closeSecond"
+            <Button
+                android:id="@+id/verticalBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="上下回原点" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />-->
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="横向脉冲量" />
+
+            <TextView
+                android:id="@+id/horizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/horizontalBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="横向回原点" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/tips_blue" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>
