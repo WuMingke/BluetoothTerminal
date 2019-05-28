@@ -21,6 +21,7 @@ import com.whosssmade.bluetoothterminal.business.presenter.MainPresenter;
 import com.whosssmade.bluetoothterminal.business.presenter.SearchPresenter;
 import com.whosssmade.bluetoothterminal.model.constant.Constants;
 import com.whosssmade.bluetoothterminal.ui.adapters.ItemFragmentPagerAdapter;
+import com.whosssmade.bluetoothterminal.ui.dialogs.SetValueDialog;
 import com.whosssmade.bluetoothterminal.ui.fragments.ItemFragment1;
 import com.whosssmade.bluetoothterminal.ui.fragments.ItemFragment2;
 import com.whosssmade.bluetoothterminal.ui.fragments.ItemFragment3;
@@ -148,7 +149,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         switch (view.getId()) {
             case R.id.verticalBtn://上下回原点
                 break;
-            case R.id.horizontalBtn://水平回原点
+            case R.id.horizontalBtn://横向回原点
                 break;
 
             case R.id.back:
@@ -163,8 +164,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             case R.id.item3:
                 viewpager.setCurrentItem(2);
                 break;
-
-
         }
     }
 
@@ -212,6 +211,17 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         byte[] bytes = new byte[len];
         inputStream.read(bytes);
         return bytes;
+    }
+
+    private void sendCommand(byte[] bytes) {
+        try {
+            if (outputStream != null) {
+                outputStream.write(bytes);
+                outputStream.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

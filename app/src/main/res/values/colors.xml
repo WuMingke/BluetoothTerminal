@@ -7,4 +7,5 @@
     <color name="white">@android:color/white</color>
     <color name="line">#d7d5dd</color>
     <color name="black">@android:color/black</color>
+    <color name="gray">#999999</color>
 </resources>
