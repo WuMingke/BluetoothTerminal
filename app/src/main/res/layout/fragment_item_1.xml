@@ -65,22 +65,23 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/down"
+                android:id="@+id/up"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
-                android:text="下移" />
+                android:tag="M50"
+                android:text="上移" />
 
             <Button
-                android:id="@+id/up"
+                android:id="@+id/down"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
-                android:gravity="center"
-                android:text="上移" />
+                android:tag="M51"
+                android:text="下移" />
 
             <TextView
                 android:id="@+id/pulse1"
@@ -116,20 +117,22 @@
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/forward"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
-                android:gravity="center"
+                android:tag="M52"
                 android:text="前进" />
 
             <Button
+                android:id="@+id/back"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
-                android:gravity="center"
+                android:tag="M53"
                 android:text="后退" />
 
             <TextView
@@ -166,20 +169,22 @@
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/rotation1"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
-                android:gravity="center"
+                android:tag="M54"
                 android:text="出口面" />
 
             <Button
+                android:id="@+id/rotation2"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
-                android:gravity="center"
+                android:tag="M55"
                 android:text="打印机面" />
 
             <TextView
@@ -216,20 +221,22 @@
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/open"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
-                android:gravity="center"
+                android:tag="M56"
                 android:text="张开" />
 
             <Button
+                android:id="@+id/close"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
-                android:gravity="center"
+                android:tag="M57"
                 android:text="夹紧" />
 
             <TextView
@@ -249,49 +256,6 @@
                 tools:text="4000" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="放料数量"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="4000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                tools:text="4000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                tools:text="4000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                tools:text="4000" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -304,49 +268,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="1" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="4000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                tools:text="4000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                tools:text="4000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                tools:text="4000" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="料仓号"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -390,30 +311,221 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="50dp"
-            android:gravity="center_vertical"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/btn_bg"
                 android:gravity="center"
-                android:text="复位" />
+                android:text="横向脉冲"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
-            <Button
+            <TextView
+                android:id="@+id/entrepot0_pulse"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/btn_bg"
                 android:gravity="center"
-                android:text="流程" />
+                android:text="4000" />
+
+            <TextView
+                android:id="@+id/entrepot1_pulse"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:text="4000" />
+
+            <TextView
+                android:id="@+id/entrepot2_pulse"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:text="4000" />
+
+            <TextView
+                android:id="@+id/entrepot3_pulse"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:text="4000" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="放料数量"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/entrepot0_quantity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="4000" />
+
+            <TextView
+                android:id="@+id/entrepot1_quantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:text="4000" />
+
+            <TextView
+                android:id="@+id/entrepot2_quantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:text="4000" />
+
+            <TextView
+                android:id="@+id/entrepot3_quantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:text="4000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="取货料仓"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/entrepot"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/bottom_pulse"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="底部脉冲"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:text="4000" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="料厚脉冲"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/thickness_pulse"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:text="4000" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 

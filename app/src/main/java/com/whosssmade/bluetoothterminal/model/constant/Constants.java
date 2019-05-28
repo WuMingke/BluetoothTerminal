@@ -12,4 +12,6 @@ public class Constants {
 
     public static final String NEW_VALUE = "NEW_VALUE";
 
+    public static final String REQUEST_VALUE = "REQUEST_VALUE";
+
 }

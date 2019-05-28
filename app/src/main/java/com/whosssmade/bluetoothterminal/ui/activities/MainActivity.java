@@ -3,6 +3,7 @@ package com.whosssmade.bluetoothterminal.ui.activities;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.whosssmade.bluetoothterminal.R;
@@ -20,12 +22,16 @@ import com.whosssmade.bluetoothterminal.business.contract.MainContract;
 import com.whosssmade.bluetoothterminal.business.presenter.MainPresenter;
 import com.whosssmade.bluetoothterminal.business.presenter.SearchPresenter;
 import com.whosssmade.bluetoothterminal.model.constant.Constants;
+import com.whosssmade.bluetoothterminal.model.constant.EventBusMessage;
 import com.whosssmade.bluetoothterminal.ui.adapters.ItemFragmentPagerAdapter;
+import com.whosssmade.bluetoothterminal.ui.dialogs.LoadingDialog;
 import com.whosssmade.bluetoothterminal.ui.dialogs.SetValueDialog;
 import com.whosssmade.bluetoothterminal.ui.fragments.ItemFragment1;
 import com.whosssmade.bluetoothterminal.ui.fragments.ItemFragment2;
 import com.whosssmade.bluetoothterminal.ui.fragments.ItemFragment3;
 import com.whosssmade.bluetoothterminal.utils.Utils;
+
+import org.simple.eventbus.Subscriber;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -60,25 +66,42 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @BindView(R.id.item3)
     TextView item3;
 
+    @BindView(R.id.verticalBtn)
+    Button verticalBtn;
+
+    @BindView(R.id.horizontalBtn)
+    Button horizontalBtn;
+
     private BluetoothDevice deviceBean;
     private BluetoothSocket socket;
-    private byte[] open = new byte[]{0x55, 0x01, 0x01, 0x02, 0x00, 0x00, 0x00, (byte) 0x59};
+    private byte[] open = new byte[]{0x55, 0x01, 0x01, 0x02, 0x00, 0x00, 0x00, 0x59};
     private byte[] close = new byte[]{0x55, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, (byte) 0x58};
 
     private byte[] handOpen = new byte[]{0x01, 0x05, 0x00, 0x38, (byte) 0xFF, 0x00, 0x0D, (byte) 0xF7};
     private byte[] handClose = new byte[]{0x01, 0x05, 0x00, 0x39, (byte) 0xFF, 0x00, 0x5C, 0x37};
 
-    private OutputStream outputStream = null;
-    private InputStream inputStream;
+    private OutputStream outputStream, outputStream1;
+    private InputStream inputStream, inputStream1;
+    private static final byte[] readPreByte = new byte[]{0x01, 0x01};
+    private static final byte[] readBackByte = new byte[]{0x01, 0x01};
+    private static final byte[] writePreByte = new byte[]{0x01, 0x05};
+    private static final byte[] writeBackByte = new byte[]{(byte) 0xFF, 0x00};
+    private byte[] verticalPulse = new byte[]{0x01, 0x01, 0x13, (byte) 0x8a, 0x00, 0x01};//上下脉冲
+    private byte[] horizontalPulse = new byte[]{0x01, 0x01, 0x13, (byte) 0x8c, 0x00, 0x01};//横向脉冲
 
-    private boolean read = true;
+    private static final byte[] readRegisterPreByte = new byte[]{0x01, 0x03};
+    private static final byte[] readRegisterBackByte = new byte[]{0x00, 0x03};
+
+    //private boolean read = true;
 
     private ItemFragmentPagerAdapter pagerAdapter;
+    //private Intent readPulseServiceIntent;
 
     @Override
     protected int getLayout() {
         return R.layout.activity_main;
     }
+
 
     @Override
     protected void initInject(Bundle bundle) {
@@ -88,8 +111,38 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @Override
     protected void initEventAndData() {
 
-    /*    deviceBean = getIntent().getParcelableExtra(Constants.DEVICE_BEAN);
-        new Thread(new Runnable() {
+        final LoadingDialog loadingDialog = new LoadingDialog(this);
+        loadingDialog.show();
+        List<Fragment> fragments = new ArrayList<>();
+        ItemFragment1 fragment1 = new ItemFragment1();
+        fragments.add(fragment1);
+        ItemFragment2 fragment2 = new ItemFragment2();
+        fragments.add(fragment2);
+        ItemFragment3 fragment3 = new ItemFragment3();
+        fragments.add(fragment3);
+        pagerAdapter = new ItemFragmentPagerAdapter(fragments, getSupportFragmentManager());
+        viewpager.setAdapter(pagerAdapter);
+        viewpager.setOnPageChangeListener(this);
+        viewpager.setCurrentItem(0);
+        item1.setTextColor(Color.WHITE);
+        item1.setBackgroundColor(getResources().getColor(R.color.tips_blue));
+        item2.setTextColor(Color.BLACK);
+        item2.setBackgroundColor(Color.WHITE);
+        item3.setTextColor(Color.BLACK);
+        item3.setBackgroundColor(Color.WHITE);
+
+
+        deviceBean = getIntent().getParcelableExtra(Constants.DEVICE_BEAN);
+
+        /**
+         * 5个线程
+         * <p>
+         * 1个线程用来处理socket连接
+         * 1个线程用来循环读上下/横向脉冲
+         * 2个线程用来读一次相应页面的数据
+         * 1个线程用来处理按钮
+         */
+        new Thread(new Runnable() {//处理socket连接
             @Override
             public void run() {
                 try {
@@ -101,14 +154,81 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                loadingDialog.dismiss();
                                 showToast("已建立蓝牙连接");
                             }
                         });
+                        new Thread(new Runnable() {//循环读上下/横向脉冲
+                            @Override
+                            public void run() {
+                                if (socket != null) {
+                                    try {
+                                        outputStream = socket.getOutputStream();
+                                        inputStream = socket.getInputStream();
+
+                                        byte[] d5002s = Utils.getCommandBytes("D5002", readRegisterPreByte, readRegisterBackByte);
+                                        sendCommand(Utils.calcCrc16(d5002s));
+
+                                        while (true) {
+                                            byte[] bytes = readInputStream(inputStream);
+                                            //Log.i("wmk", "----------" + Utils.bytesToHexString(bytes));
+                                            final String s = Utils.bytesToHexString(bytes);
+                                            final String[] s1 = s.split(" ");
+                                            if (s1.length > 6) {
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        vertical.setText(s1[3]);//数据的第一个
+                                                        horizontal.setText(s1[5]);//数据的最后一个
+                                                    }
+                                                });
+                                                sendCommand(Utils.calcCrc16(d5002s));//循环
+                                            } else {
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        showToast("返回数据有误");
+                                                    }
+                                                });
+                                            }
+
+                                        }
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }).start();
+
+                        new Thread(new Runnable() {//第一页的数据
+                            @Override
+                            public void run() {
+
+                            }
+                        }).start();
+
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
+
+
+
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (socket != null) {
 
                         outputStream = socket.getOutputStream();
                         inputStream = socket.getInputStream();
                     }
-                    while (read) {
+                    while (true) {
                         byte[] bytes = readInputStream(inputStream);
                         Log.i("wmk", "----------" + Utils.bytesToHexString(bytes));
                         final String s = Utils.bytesToHexString(bytes);
@@ -116,7 +236,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                //  order.append(s + "\n");
+
+                                vertical.setText(s);
                             }
                         });
                     }
@@ -127,20 +248,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
         }).start();*/
 
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new ItemFragment1());
-        fragments.add(new ItemFragment2());
-        fragments.add(new ItemFragment3());
-        pagerAdapter = new ItemFragmentPagerAdapter(fragments, getSupportFragmentManager());
-        viewpager.setAdapter(pagerAdapter);
-        viewpager.setOnPageChangeListener(this);
-        viewpager.setCurrentItem(0);
-        item1.setTextColor(Color.WHITE);
-        item1.setBackgroundColor(getResources().getColor(R.color.tips_blue));
-        item2.setTextColor(Color.BLACK);
-        item2.setBackgroundColor(Color.WHITE);
-        item3.setTextColor(Color.BLACK);
-        item3.setBackgroundColor(Color.WHITE);
+
+        /*readPulseServiceIntent = new Intent(this, ReadPulseService.class);
+        startService(readPulseServiceIntent);*/
     }
 
 
@@ -148,10 +258,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.verticalBtn://上下回原点
+                String tag = (String) verticalBtn.getTag();
+                byte[] bytes = Utils.getCommandBytes(tag, writePreByte, writeBackByte);
+                sendCommand(Utils.calcCrc16(bytes));
                 break;
             case R.id.horizontalBtn://横向回原点
+                String tag1 = (String) horizontalBtn.getTag();
+                byte[] bytes1 = Utils.getCommandBytes(tag1, writePreByte, writeBackByte);
+                sendCommand(Utils.calcCrc16(bytes1));
                 break;
-
             case R.id.back:
                 finish();
                 break;
@@ -170,7 +285,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        read = false;
+        // read = false;
         if (socket != null) {
             try {
                 socket.close();
@@ -192,6 +307,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 e.printStackTrace();
             }
         }
+
+        // stopService(readPulseServiceIntent);
     }
 
     private byte[] readInputStream(InputStream inputStream) throws IOException {
@@ -262,4 +379,5 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void onPageScrollStateChanged(int state) {
 
     }
+
 }

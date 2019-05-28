@@ -20,23 +20,23 @@
             android:padding="15dp"
             android:src="@drawable/back" />
 
-        <!--        <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center"
-                    android:text="搜索"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
+        <TextView
+            android:id="@+id/commandTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/back"
+            android:gravity="center_vertical"
+            android:text="收到的命令："
+            android:textColor="@color/white" />
 
-                <ImageView
-                    android:id="@+id/search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:adjustViewBounds="true"
-                    android:padding="15dp"
-                    android:src="@drawable/search" />-->
+        <TextView
+            android:id="@+id/command"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/commandTitle"
+            android:gravity="center_vertical"
+            android:textColor="@color/white" />
+
     </RelativeLayout>
 
     <LinearLayout
@@ -63,18 +63,18 @@
                 android:id="@+id/vertical"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="123" />
+                android:layout_weight="2"
+                android:gravity="center" />
 
             <Button
                 android:id="@+id/verticalBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:background="@drawable/btn_bg"
                 android:gravity="center"
+                android:tag="M100"
                 android:text="上下回原点" />
         </LinearLayout>
 
@@ -97,17 +97,17 @@
                 android:id="@+id/horizontal"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="123" />
+                android:layout_weight="2"
+                android:gravity="center" />
 
             <Button
                 android:id="@+id/horizontalBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M101"
                 android:text="横向回原点" />
         </LinearLayout>
 

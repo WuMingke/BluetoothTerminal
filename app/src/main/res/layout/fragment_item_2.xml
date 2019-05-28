@@ -16,6 +16,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/vertical_rotation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -23,6 +24,7 @@
                 tools:text="4000" />
 
             <TextView
+                android:id="@+id/vertical_machine"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -30,6 +32,7 @@
                 tools:text="4000" />
 
             <TextView
+                android:id="@+id/vertical_hot"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -37,6 +40,7 @@
                 tools:text="4000" />
 
             <TextView
+                android:id="@+id/vertical_out"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -44,6 +48,7 @@
                 tools:text="4000" />
 
             <TextView
+                android:id="@+id/vertical_get"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -60,42 +65,52 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/vertical_rotation_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M102"
                 android:text="上下旋转位" />
 
             <Button
+                android:id="@+id/vertical_machine_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M103"
                 android:text="上下打印机位" />
 
             <Button
+                android:id="@+id/vertical_hot_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M104"
                 android:text="上下烤箱位" />
 
             <Button
+                android:id="@+id/vertical_out_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M105"
                 android:text="上下出口位" />
 
             <Button
+                android:id="@+id/vertical_get_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M106"
                 android:text="上下取料位" />
         </LinearLayout>
 
@@ -106,6 +121,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/horizontal_entrepot"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -113,6 +129,7 @@
                 tools:text="4000" />
 
             <TextView
+                android:id="@+id/horizontal_machine"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -120,6 +137,7 @@
                 tools:text="4000" />
 
             <TextView
+                android:id="@+id/horizontal_hot"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -127,6 +145,7 @@
                 tools:text="4000" />
 
             <TextView
+                android:id="@+id/horizontal_out"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -134,6 +153,7 @@
                 tools:text="4000" />
 
             <TextView
+                android:id="@+id/down_pulse"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -150,38 +170,47 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/horizontal_entrepot_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M107"
                 android:text="横向仓料位" />
 
             <Button
+                android:id="@+id/horizontal_machine_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M108"
                 android:text="横向打印机位" />
 
             <Button
+                android:id="@+id/horizontal_hot_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M109"
                 android:text="横向烤箱位" />
 
             <Button
+                android:id="@+id/horizontal_out_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M110"
                 android:text="横向出口位" />
 
             <Button
+                android:id="@+id/down_pulse_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
@@ -198,44 +227,22 @@
             android:orientation="horizontal">
 
             <Button
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_bg"
-                android:text="烤箱伸出" />
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_bg"
-                android:text="烤箱缩回" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="horizontal">
-
-            <Button
+                android:id="@+id/machine_out"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M116"
                 android:text="打印机伸出" />
 
             <Button
+                android:id="@+id/machine_in"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M117"
                 android:text="打印机缩回" />
         </LinearLayout>
 
@@ -248,19 +255,82 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/hot_out"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
-                android:text="推杆伸出" />
+                android:tag="M114"
+                android:text="烤箱伸出" />
 
             <Button
+                android:id="@+id/hot_in"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:tag="M115"
+                android:text="烤箱缩回" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/handspike_out"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_bg"
+                android:tag="M112"
+                android:text="推杆伸出" />
+
+            <Button
+                android:id="@+id/handspike_in"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_bg"
+                android:tag="M113"
                 android:text="推杆缩回" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/out_out"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_bg"
+                android:tag="M201"
+                android:text="出货口开" />
+
+            <Button
+                android:id="@+id/out_in"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_bg"
+                android:tag="M200"
+                android:text="出货口关" />
         </LinearLayout>
 
         <LinearLayout
@@ -269,15 +339,18 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="50dp"
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/belt_out"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
-                android:text="皮带" />
+                android:tag="M111"
+                android:text="皮带出货" />
 
             <View
                 android:layout_width="0dp"
@@ -285,51 +358,6 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                tools:text="4000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                tools:text="4000" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="底部脉冲量"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="料厚脉冲量"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-        </LinearLayout>
     </LinearLayout>
 
 

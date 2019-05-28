@@ -1,6 +1,7 @@
 package com.whosssmade.bluetoothterminal.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.TextView;
@@ -15,6 +16,41 @@ import java.util.Arrays;
  */
 
 public class Utils {
+
+    public static byte[] getCommandBytes(String tag, byte[] preBytes, byte[] backBytes) {
+        String s = tag.substring(0, 1);
+        String substring = tag.substring(1, tag.length());
+        byte[] commandBytes = null;
+        switch (s) {
+            case "M":
+            case "D":
+                Integer integer = Integer.valueOf(substring);
+                // Log.i("wmk","-----"+substring);
+                String s1 = Integer.toHexString(integer);
+                //Log.i("wmk","-----"+s1);
+                Integer integer1 = Integer.valueOf(substring);//十六进制 整形
+                byte[] bytes = intToByteArray(integer1);
+                commandBytes = concatAll(preBytes, bytes, backBytes);
+                //String s2 = bytesToHexString2(commandBytes);
+                //Log.i("wmk","-----"+s2);
+
+                break;
+
+            // break;
+        }
+        return commandBytes;
+    }
+
+    public static byte[] intToByteArray(int a) {
+        return new byte[]{
+                /*        (byte) ((a >> 24) & 0xFF),
+                        (byte) ((a >> 16) & 0xFF),*/
+                (byte) ((a >> 8) & 0xFF),
+                (byte) (a & 0xFF)
+        };
+    }
+
+
     public static void showToast(Context context, String msg) {
         Toast toast = new Toast(context);
         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -135,7 +171,7 @@ public class Utils {
     public static String bytesToHexString2(byte[] bytes) {
         StringBuilder stringBuilder = new StringBuilder(bytes.length * 2);
         for (byte b : bytes) {
-            stringBuilder.append(String.format("%02x", new Integer(b & 0xff))+" ");
+            stringBuilder.append(String.format("%02x", new Integer(b & 0xff)) + " ");
         }
         return stringBuilder.toString();
     }
