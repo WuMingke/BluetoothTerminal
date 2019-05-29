@@ -9,7 +9,11 @@ import com.whosssmade.bluetoothterminal.R;
 import com.whosssmade.bluetoothterminal.base.BaseFragment;
 import com.whosssmade.bluetoothterminal.business.contract.ItemContract1;
 import com.whosssmade.bluetoothterminal.business.presenter.ItemPresenter1;
+import com.whosssmade.bluetoothterminal.model.constant.Constants;
+import com.whosssmade.bluetoothterminal.model.constant.EventBusMessage;
 import com.whosssmade.bluetoothterminal.ui.dialogs.SetValueDialog;
+
+import org.simple.eventbus.Subscriber;
 
 import java.nio.channels.NonReadableChannelException;
 import java.util.IdentityHashMap;
@@ -72,8 +76,61 @@ public class ItemFragment1 extends BaseFragment<ItemPresenter1> implements ItemC
     @BindView(R.id.thickness_pulse)
     TextView thickness_pulse;
 
+    @BindView(R.id.up)
+    TextView up;
+
     @BindView(R.id.down)
-    Button down;
+    TextView down;
+
+    @BindView(R.id.forward)
+    TextView forward;
+
+    @BindView(R.id.back)
+    TextView back;
+
+    @BindView(R.id.rotation1)
+    TextView rotation1;
+
+    @BindView(R.id.rotation2)
+    TextView rotation2;
+
+    @BindView(R.id.open)
+    TextView open;
+
+    @BindView(R.id.close)
+    TextView close;
+
+    public TextView getUp() {
+        return up;
+    }
+
+    public TextView getDown() {
+        return down;
+    }
+
+    public TextView getForward() {
+        return forward;
+    }
+
+    public TextView getBack() {
+        return back;
+    }
+
+    public TextView getRotation1() {
+        return rotation1;
+    }
+
+    public TextView getRotation2() {
+        return rotation2;
+    }
+
+    public TextView getOpen() {
+        return open;
+    }
+
+    public TextView getClose() {
+        return close;
+    }
 
     private SetValueDialog setValueDialog;
 
@@ -102,7 +159,6 @@ public class ItemFragment1 extends BaseFragment<ItemPresenter1> implements ItemC
             R.id.entrepot,
             R.id.bottom_pulse,
             R.id.thickness_pulse,
-
     })
     public void onClick(View view) {
         switch (view.getId()) {
@@ -183,6 +239,22 @@ public class ItemFragment1 extends BaseFragment<ItemPresenter1> implements ItemC
                 break;
 
 
+        }
+    }
+
+    @Subscriber(tag = Constants.DATA_BUTTON)
+    public void setBtnState(EventBusMessage<String[]> message) {
+        if (message.getT() != null) {
+            String[] strings = message.getT();
+         /*   up.setBackgroundResource();//上移
+            down.setBackgroundResource();//下移
+            forward.setBackgroundResource();//前进
+            back.setBackgroundResource();//后退
+            rotation1.setBackgroundResource();//出口面
+            rotation2.setBackgroundResource();//打印机面
+            open.setBackgroundResource();//张开
+            close.setBackgroundResource();//夹紧
+*/
         }
     }
 

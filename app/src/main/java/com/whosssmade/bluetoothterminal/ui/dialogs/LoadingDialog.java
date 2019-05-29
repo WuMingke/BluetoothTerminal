@@ -15,12 +15,17 @@ import butterknife.Unbinder;
 public class LoadingDialog extends Dialog {
 
     private Unbinder bind;
+    private TextView textView;
+
+    public TextView getTextView() {
+        return textView;
+    }
 
     public LoadingDialog(@NonNull Context context) {
         super(context);
 
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        TextView textView = (TextView) LayoutInflater.from(context).inflate(R.layout.diy_toast, null);
+         textView = (TextView) LayoutInflater.from(context).inflate(R.layout.diy_toast, null);
         setContentView(textView);
 
         textView.setText("正在连接蓝牙...");

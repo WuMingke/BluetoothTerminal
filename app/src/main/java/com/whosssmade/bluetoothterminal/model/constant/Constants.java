@@ -14,4 +14,7 @@ public class Constants {
 
     public static final String REQUEST_VALUE = "REQUEST_VALUE";
 
+    public static final String DATA_FRAGMENT_1 = "DATA_FRAGMENT_1";
+    public static final String DATA_FRAGMENT_2 = "DATA_FRAGMENT_2";
+    public static final String DATA_BUTTON = "DATA_BUTTON";
 }

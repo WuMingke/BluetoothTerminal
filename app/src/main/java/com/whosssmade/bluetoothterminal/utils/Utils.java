@@ -1,6 +1,7 @@
 package com.whosssmade.bluetoothterminal.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -9,13 +10,55 @@ import android.widget.Toast;
 
 import com.whosssmade.bluetoothterminal.R;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
+
+import static java.lang.Thread.sleep;
 
 /**
  * Created by Administrator on 2019/5/24.
  */
 
 public class Utils {
+
+    public static void setBtnState(String data, TextView textView) {
+        if (data.equals("00")) {
+            setTextClickUp(textView);
+        }
+        if (data.equals("01")) {
+            setTextClickDown(textView);
+        }
+    }
+    public static byte[] readInputStream(InputStream inputStream) throws IOException {
+        int len = 0;
+        while (len == 0) {
+            if (inputStream.available() <= 0) {
+                continue;
+            } else {
+                try {
+                    sleep(80);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            len = inputStream.available();
+        }
+        byte[] bytes = new byte[len];
+        inputStream.read(bytes);
+        return bytes;
+    }
+
+    public static void setTextClickUp(TextView textView) {
+        textView.setBackgroundResource(R.drawable.btn_bg);
+        textView.setTextColor(Color.BLACK);
+    }
+
+    public static void setTextClickDown(TextView textView) {
+        textView.setBackgroundResource(R.drawable.btn_click_down);
+        textView.setTextColor(Color.WHITE);
+    }
+
 
     public static byte[] getCommandBytes(String tag, byte[] preBytes, byte[] backBytes) {
         String s = tag.substring(0, 1);

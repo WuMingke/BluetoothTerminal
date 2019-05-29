@@ -64,24 +64,28 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <Button
+            <TextView
                 android:id="@+id/up"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M50"
-                android:text="上移" />
+                android:text="上移"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/down"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M51"
-                android:text="下移" />
+                android:text="下移"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/pulse1"
@@ -116,24 +120,28 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <Button
+            <TextView
                 android:id="@+id/forward"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M52"
-                android:text="前进" />
+                android:text="前进"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/back"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M53"
-                android:text="后退" />
+                android:text="后退"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/pulse2"
@@ -168,24 +176,28 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <Button
+            <TextView
                 android:id="@+id/rotation1"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M54"
-                android:text="出口面" />
+                android:text="出口面"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/rotation2"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M55"
-                android:text="打印机面" />
+                android:text="打印机面"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/pulse3"
@@ -220,24 +232,28 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <Button
+            <TextView
                 android:id="@+id/open"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M56"
-                android:text="张开" />
+                android:text="张开"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/close"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M57"
-                android:text="夹紧" />
+                android:text="夹紧"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/pulse4"

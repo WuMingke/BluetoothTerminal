@@ -64,54 +64,64 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/vertical_rotation_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M102"
-                android:text="上下旋转位" />
+                android:text="上下旋转位"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/vertical_machine_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M103"
-                android:text="上下打印机位" />
+                android:text="上下打印机位"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/vertical_hot_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M104"
-                android:text="上下烤箱位" />
+                android:text="上下烤箱位"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/vertical_out_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M105"
-                android:text="上下出口位" />
+                android:text="上下出口位"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/vertical_get_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M106"
-                android:text="上下取料位" />
+                android:text="上下取料位"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
@@ -169,53 +179,63 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/horizontal_entrepot_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M107"
-                android:text="横向仓料位" />
+                android:text="横向仓料位"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/horizontal_machine_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M108"
-                android:text="横向打印机位" />
+                android:text="横向打印机位"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/horizontal_hot_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M109"
-                android:text="横向烤箱位" />
+                android:text="横向烤箱位"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/horizontal_out_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M110"
-                android:text="横向出口位" />
+                android:text="横向出口位"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/down_pulse_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
-                android:text="下放脉冲量" />
+                android:gravity="center"
+                android:text="下放脉冲量"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
@@ -226,24 +246,28 @@
             android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/machine_out"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M116"
-                android:text="打印机伸出" />
+                android:text="打印机伸出"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/machine_in"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M117"
-                android:text="打印机缩回" />
+                android:text="打印机缩回"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
@@ -254,24 +278,28 @@
             android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/hot_out"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M114"
-                android:text="烤箱伸出" />
+                android:text="烤箱伸出"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/hot_in"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M115"
-                android:text="烤箱缩回" />
+                android:text="烤箱缩回"
+                android:textColor="@color/black" />
 
 
         </LinearLayout>
@@ -285,24 +313,28 @@
             android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/handspike_out"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M112"
-                android:text="推杆伸出" />
+                android:text="推杆伸出"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/handspike_in"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M113"
-                android:text="推杆缩回" />
+                android:text="推杆缩回"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
@@ -313,24 +345,28 @@
             android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/out_out"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M201"
-                android:text="出货口开" />
+                android:text="出货口开"
+                android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/out_in"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M200"
-                android:text="出货口关" />
+                android:text="出货口关"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
@@ -342,15 +378,17 @@
             android:layout_marginBottom="50dp"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/belt_out"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
+                android:gravity="center"
                 android:tag="M111"
-                android:text="皮带出货" />
+                android:text="皮带出货"
+                android:textColor="@color/black" />
 
             <View
                 android:layout_width="0dp"

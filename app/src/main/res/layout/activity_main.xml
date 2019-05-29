@@ -64,7 +64,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:gravity="center" />
+                android:gravity="center"
+                android:tag="D5002" />
 
             <Button
                 android:id="@+id/verticalBtn"
@@ -98,7 +99,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:gravity="center" />
+                android:gravity="center"
+                android:tag="D5004" />
 
             <Button
                 android:id="@+id/horizontalBtn"
