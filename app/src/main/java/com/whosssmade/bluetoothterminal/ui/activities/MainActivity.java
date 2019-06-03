@@ -105,17 +105,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private ItemFragment2 itemFragment2;
     private ItemFragment3 itemFragment3;
 
-    private MyHandler myHandler;
+    // private MyHandler myHandler;
     private byte[] commandBytes;
     private List<Integer> finalData = new ArrayList<>();
     private int readData;
     //private boolean needReadData;
-    private byte[] m100s;
-    private byte[] m100s1;
     private byte[] m54s;
-    private byte[] m54s1;
     private byte[] m55s;
-    private byte[] m55s1;
     private byte[] m50s;
     private byte[] m51s;
     private byte[] m52s;
@@ -127,8 +123,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private byte[] d5002s;
     private byte[] m52s1;
     private byte[] m53s1;
-    private byte[] m54s2;
-    private byte[] m55s2;
     private byte[] m56s;
     private byte[] m56s1;
     private byte[] m57s;
@@ -182,6 +176,47 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private byte[] m106s;
     private byte[] m106s1;
     private byte[] m50s2;
+    private String BtnTag;
+    private byte[] m51s2;
+    private byte[] m54s1;
+    private byte[] m54s2;
+    private byte[] m55s1;
+    private byte[] m55s2;
+    private byte[] m52s2;
+    private byte[] m53s2;
+    private byte[] m56s2;
+    private byte[] m57s2;
+    private byte[] m107s2;
+    private byte[] m116s2;
+    private byte[] m117s2;
+    private byte[] m114s2;
+    private byte[] m115s2;
+    private byte[] m112s2;
+    private byte[] m113s2;
+    private byte[] m201s2;
+    private byte[] m200s2;
+    private byte[] m111s2;
+    private byte[] m102s2;
+    private byte[] m103s2;
+    private byte[] m104s2;
+    private byte[] m105s2;
+    private byte[] m106s2;
+    private byte[] m108s2;
+    private byte[] m109s2;
+    private byte[] m110s2;
+    private byte[] m100s;
+    private byte[] m100s1;
+    private byte[] m101s;
+    private byte[] m101s1;
+    private byte[] m100s2;
+    private byte[] m101s2;
+    private byte[] m119s2;
+    private byte[] m118s2;
+    private byte[] m121s2;
+    private byte[] m122s2;
+    private byte[] m10s2;
+    private byte[] m130s2;
+
 
     /**
      * 上移M50
@@ -203,11 +238,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m50s);
             onUpClicked = true;
             itemFragment1.getUp().setBackgroundResource(R.drawable.btn_click_down);
-
-          /*  if (m50s2==null){
-                m50s2 = Utils.getCommandBytes("M50", readPreByte, readBackByte);
-            }
-            sendCommand(m50s2);*/
+            BtnTag = "M50";
         } else {
             if (m50s1 == null) {
                 m50s1 = Utils.getCommandBytes("M50", writePreByte, writeBackByte2);
@@ -228,6 +259,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m51s);
             onDownClicked = true;
             itemFragment1.getDown().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M51";
         } else {
             if (m51s1 == null) {
                 m51s1 = Utils.getCommandBytes("M51", writePreByte, writeBackByte2);
@@ -250,6 +282,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m52s);
             onForwardClicked = true;
             itemFragment1.getForward().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M52";
         } else {
             if (m52s1 == null) {
                 m52s1 = Utils.getCommandBytes("M52", writePreByte, writeBackByte2);
@@ -272,6 +305,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m53s);
             onBackClicked = true;
             itemFragment1.getBack().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M53";
         } else {
             if (m53s1 == null) {
                 m53s1 = Utils.getCommandBytes("M53", writePreByte, writeBackByte2);
@@ -297,14 +331,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             onRotation1Clicked = true;
             itemFragment1.getRotation1().setBackgroundResource(R.drawable.btn_click_down);
         } else {
-            if (m54s2 == null) {
-                m54s2 = Utils.getCommandBytes("M54", writePreByte, writeBackByte2);
+            if (m54s1 == null) {
+                m54s1 = Utils.getCommandBytes("M54", writePreByte, writeBackByte2);
             }
-            sendCommand(m54s2);
+            sendCommand(m54s1);
             onRotation1Clicked = false;
             itemFragment1.getRotation1().setBackgroundResource(R.drawable.btn_bg);
         }
-
+        BtnTag = "M54";
     }
 
     @Override
@@ -317,15 +351,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m55s);
             onRotation2Clicked = true;
             itemFragment1.getRotation2().setBackgroundResource(R.drawable.btn_click_down);
+
         } else {
-            if (m55s2 == null) {
-                m55s2 = Utils.getCommandBytes("M55", writePreByte, writeBackByte2);
+            if (m55s1 == null) {
+                m55s1 = Utils.getCommandBytes("M55", writePreByte, writeBackByte2);
             }
-            sendCommand(m55s2);
+            sendCommand(m55s1);
             onRotation2Clicked = false;
             itemFragment1.getRotation2().setBackgroundResource(R.drawable.btn_bg);
         }
-
+        BtnTag = "M55";
     }
 
     private boolean onOpenClicked, onCloseClicked;
@@ -339,6 +374,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m56s);
             onOpenClicked = true;
             itemFragment1.getOpen().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M56";
         } else {
             if (m56s1 == null) {
                 m56s1 = Utils.getCommandBytes("M56", writePreByte, writeBackByte2);
@@ -360,6 +396,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m57s);
             onCloseClicked = true;
             itemFragment1.getClose().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M57";
         } else {
             if (m57s1 == null) {
                 m57s1 = Utils.getCommandBytes("M57", writePreByte, writeBackByte2);
@@ -395,6 +432,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m102s);
             onVertical_rotation_btnClicked = true;
             itemFragment2.getVertical_rotation_btn().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M102";
         } else {
             if (m102s1 == null) {
                 m102s1 = Utils.getCommandBytes("M102", writePreByte, writeBackByte2);
@@ -417,6 +455,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m103s);
             onVertical_machine_btnClicked = true;
             itemFragment2.getVertical_machine_btn().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M103";
         } else {
             if (m103s1 == null) {
                 m103s1 = Utils.getCommandBytes("M103", writePreByte, writeBackByte2);
@@ -438,6 +477,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m104s);
             onVertical_hot_btnClicked = true;
             itemFragment2.getVertical_hot_btn().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M104";
         } else {
             if (m104s1 == null) {
                 m104s1 = Utils.getCommandBytes("M104", writePreByte, writeBackByte2);
@@ -459,6 +499,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m105s);
             onVertical_out_btnClicked = true;
             itemFragment2.getVertical_out_btn().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M105";
         } else {
             if (m105s1 == null) {
                 m105s1 = Utils.getCommandBytes("M105", writePreByte, writeBackByte2);
@@ -480,6 +521,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m106s);
             onVertical_get_btnClicked = true;
             itemFragment2.getVertical_get_btn().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M106";
         } else {
             if (m106s1 == null) {
                 m106s1 = Utils.getCommandBytes("M106", writePreByte, writeBackByte2);
@@ -501,6 +543,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             onHorizontal_entrepot_btnClicked = true;
             sendCommand(m107s);
             itemFragment2.getHorizontal_entrepot_btn().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M107";
         } else {
             if (m107s1 == null) {
                 m107s1 = Utils.getCommandBytes("M107", writePreByte, writeBackByte2);
@@ -522,6 +565,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m108s);
             onHorizontal_machine_btnClicked = true;
             itemFragment2.getHorizontal_machine_btn().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M108";
         } else {
             if (m108s1 == null) {
                 m108s1 = Utils.getCommandBytes("M108", writePreByte, writeBackByte2);
@@ -544,6 +588,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m109s);
             onHorizontal_hot_btnClicked = true;
             itemFragment2.getHorizontal_hot_btn().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M109";
         } else {
             if (m109s1 == null) {
                 m109s1 = Utils.getCommandBytes("M109", writePreByte, writeBackByte2);
@@ -565,6 +610,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m110s);
             onHorizontal_out_btnClicked = true;
             itemFragment2.getHorizontal_out_btn().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M110";
         } else {
             if (m110s1 == null) {
                 m110s1 = Utils.getCommandBytes("M110", writePreByte, writeBackByte2);
@@ -602,6 +648,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m116s);
             onMachine_outClicked = true;
             itemFragment2.getMachine_out().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M116";
         } else {
             if (m116s1 == null) {
                 m116s1 = Utils.getCommandBytes("M116", writePreByte, writeBackByte2);
@@ -623,6 +670,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m117s);
             onMachine_inClicked = true;
             itemFragment2.getMachine_in().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M117";
         } else {
             if (m117s1 == null) {
                 m117s1 = Utils.getCommandBytes("M117", writePreByte, writeBackByte2);
@@ -644,6 +692,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m114s);
             onHot_outClick = true;
             itemFragment2.getHot_out().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M114";
         } else {
             if (m114s1 == null) {
                 m114s1 = Utils.getCommandBytes("M114", writePreByte, writeBackByte2);
@@ -665,6 +714,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m115s);
             onHot_inClicked = true;
             itemFragment2.getHot_in().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M115";
         } else {
             if (m115s1 == null) {
                 m115s1 = Utils.getCommandBytes("M115", writePreByte, writeBackByte2);
@@ -686,6 +736,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m112s);
             onHandspike_outClicked = true;
             itemFragment2.getHandspike_out().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M112";
         } else {
             if (m112s1 == null) {
                 m112s1 = Utils.getCommandBytes("M112", writePreByte, writeBackByte2);
@@ -707,6 +758,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m113s);
             onHandspike_inClicked = true;
             itemFragment2.getHandspike_in().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M113";
         } else {
             if (m113s1 == null) {
                 m113s1 = Utils.getCommandBytes("M113", writePreByte, writeBackByte2);
@@ -728,6 +780,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m201s);
             onOut_outClicked = true;
             itemFragment2.getOut_out().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M201";
         } else {
             if (m201s1 == null) {
                 m201s1 = Utils.getCommandBytes("M201", writePreByte, writeBackByte2);
@@ -749,6 +802,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m200s);
             onOut_inClick = true;
             itemFragment2.getOut_in().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M200";
         } else {
             if (m200s1 == null) {
                 m200s1 = Utils.getCommandBytes("M200", writePreByte, writeBackByte2);
@@ -770,6 +824,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m111s);
             onBelt_outClick = true;
             itemFragment2.getBelt_out().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M111";
         } else {
             if (m111s1 == null) {
                 m111s1 = Utils.getCommandBytes("M111", writePreByte, writeBackByte2);
@@ -800,6 +855,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m119s);
             onMachine_powerClicked = true;
             itemFragment3.getMachine_power().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M119";
         } else {
             if (m119s1 == null) {
                 m119s1 = Utils.getCommandBytes("M119", writePreByte, writeBackByte2);
@@ -822,6 +878,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m118s);
             onMachine_switchClicked = true;
             itemFragment3.getMachine_switch().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M118";
         } else {
             if (m118s1 == null) {
                 m118s1 = Utils.getCommandBytes("M118", writePreByte, writeBackByte2);
@@ -843,6 +900,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m121s);
             onHotClicked = true;
             itemFragment3.getHot().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M121";
         } else {
             if (m121s1 == null) {
                 m121s1 = Utils.getCommandBytes("M121", writePreByte, writeBackByte2);
@@ -864,6 +922,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m122s);
             onFanClicked = true;
             itemFragment3.getFan().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M122";
         } else {
             if (m122s1 == null) {
                 m122s1 = Utils.getCommandBytes("M122", writePreByte, writeBackByte2);
@@ -885,6 +944,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m10s);
             onMachine_resetClicked = true;
             itemFragment3.getMachine_reset().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M10";
         } else {
             if (m10s1 == null) {
                 m10s1 = Utils.getCommandBytes("M10", writePreByte, writeBackByte2);
@@ -906,6 +966,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             sendCommand(m130s);
             onBtn_resetClicked = true;
             itemFragment3.getBtn_reset().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M130";
         } else {
             if (m130s1 == null) {
                 m130s1 = Utils.getCommandBytes("M130", writePreByte, writeBackByte2);
@@ -915,115 +976,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             itemFragment3.getBtn_reset().setBackgroundResource(R.drawable.btn_bg);
         }
 
-    }
-
-    private class MyHandler extends Handler {
-        private final WeakReference<MainActivity> mActivity;
-
-        public MyHandler(MainActivity activity) {
-            mActivity = new WeakReference<MainActivity>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            //super.handleMessage(msg);
-            MainActivity mainActivity = mActivity.get();
-            if (mainActivity != null) {
-                switch (msg.what) {
-                    case 1://成功返回数据
-                        String s = (String) msg.obj;
-                        String data = msg.getData().getString("data");
-                        Log.i("wmk", "handler----指令----" + s + "----data----" + data);
-                        switch (s) {
-                           /* case "D5002":
-                                vertical.setText(data);
-                                // loopThread.setCommandBytes(Utils.calcCrc16(d5002s));
-                                break;
-                            case "D5004":
-                                horizontal.setText(data);
-                                // loopThread2.setCommandBytes(Utils.calcCrc16(d5004s));
-                                break;*/
-                            case "M100":
-                                if (!data.equals(" 0")) {
-                                    // loopThread.setCommandBytes(m100s1);
-                                    Utils.setTextClickDown(verticalBtn);
-                                } else {
-                                    Utils.setTextClickUp(verticalBtn);
-                                    Log.i("wmk", "检查上下回原点结束");
-                                }
-                                break;
-                            case "M101":
-                                Utils.setBtnState(data, horizontalBtn);
-                                break;
-                            case "M50":
-                                Utils.setBtnState(data, itemFragment1.getUp());
-                                Log.i("wmk", "--2--activity-data----" + data);
-                                break;
-                            case "M51":
-                                Utils.setBtnState(data, itemFragment1.getDown());
-                                break;
-                            case "M52":
-                                Utils.setBtnState(data, itemFragment1.getForward());
-                                break;
-                            case "M53":
-                                Utils.setBtnState(data, itemFragment1.getBack());
-                                break;
-                            case "M54":
-                                if (!data.equals(" 0")) {
-                                    sendCommand(m54s1);
-                                    //   loopThread3.setCommandBytes(m54s1);
-                                    itemFragment1.getRotation1().setBackgroundResource(R.drawable.btn_click_down);
-                                    itemFragment1.getRotation1().setEnabled(false);
-                                    Log.i("wmk", "继续检查出口面");
-                                } else {
-                                    itemFragment1.getRotation1().setEnabled(true);
-                                    Utils.setTextClickUp(itemFragment1.getRotation1());
-                                    //   loopThread2 = null;
-                                    //  loopThread3 = null;
-                                    Log.i("wmk", "检查出口面结束");
-                                }
-                                break;
-                            case "M55":
-                                if (!data.equals(" 0")) {
-                                    //loopThread5.setCommandBytes(m55s1);
-                                    sendCommand(m55s1);
-                                    itemFragment1.getRotation2().setBackgroundResource(R.drawable.btn_click_down);
-                                    itemFragment1.getRotation2().setEnabled(false);
-                                    Log.i("wmk", "继续检查打印机面");
-                                } else {
-                                    itemFragment1.getRotation2().setEnabled(true);
-                                    Utils.setTextClickUp(itemFragment1.getRotation2());
-                                    //  loopThread4 = null;
-                                    //loopThread5 = null;
-                                    Log.i("wmk", "检查打印机面结束");
-                                }
-                                break;
-                            case "M56":
-                                //Utils.setBtnState(data, itemFragment1.getOpen());
-                                if (!data.equals(" 0")) {
-                                    //loopThread10.setCommandBytes(m56s);
-                                } else {
-                                    Utils.setTextClickUp(itemFragment1.getOpen());
-                                    Log.i("wmk", "检查张开结束");
-                                }
-                                break;
-                            case "M57":
-                                // Utils.setBtnState(data, itemFragment1.getClose());
-                                if (!data.equals(" 0")) {
-                                    // loopThread11.setCommandBytes(m57s);
-                                } else {
-                                    Utils.setTextClickUp(itemFragment1.getClose());
-                                    Log.i("wmk", "检查夹紧结束");
-                                }
-                                break;
-                        }
-                        break;
-                    case 2://返回数据失败
-                        showToast((String) msg.obj);
-                        break;
-                }
-            }
-        }
     }
 
 
@@ -1064,7 +1016,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         item3.setTextColor(Color.BLACK);
         item3.setBackgroundColor(Color.WHITE);
 
-        myHandler = new MyHandler(this);
+        //myHandler = new MyHandler(this);
 
         deviceBean = getIntent().getParcelableExtra(Constants.DEVICE_BEAN);
 
@@ -1093,17 +1045,34 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                         Log.i("wmk", "命令：" + Utils.bytesToHexString(d5002s));
 
                         sendCommand(d5002s);
-                        commandBytes = d5002s;
+                        // commandBytes = d5002s;
 
                         while (true) {
 
                             final byte[] bytes = Utils.readInputStream(mInputStream);
-                            Log.i("wmk", "-----readInputStream-----" + Utils.bytesToHexString(bytes));
-                            if (checkData(bytes)) return;
+                            Log.i("wmk", "-------------------------------------readInputStream-----" + Utils.bytesToHexString(bytes));
+                            //if (checkData(bytes)) return;
+                            if (bytes.length < 2) {
+                                continue;
+                                //return true;
+                            }
+                            //校验
+                            byte[] bytes1 = new byte[bytes.length - 2];
+                            byte[] crcByte = {bytes[bytes.length - 2], bytes[bytes.length - 1]};
+                            for (int i = 0; i < bytes1.length; i++) {
+                                bytes1[i] = bytes[i];
+                            }
+                            if (!Arrays.toString(Utils.crcByte(bytes1))
+                                    .equals(Arrays.toString(crcByte))) {
+                                sendCommand(commandBytes);//数据不对，重新请求
+                                // continue;
+                                // return true;
+                            }
 
                             //计算数据  1176  67296-66976
 
                             if (bytes[1] == (byte) 0x03) {
+                                Log.i("wmk", "--读寄存器处理--" + Utils.bytesToHexString(bytes));
                                 byte[] dataByte = new byte[bytes.length - 5];
                                 for (int i = 0; i < dataByte.length; i++) {
                                     dataByte[i] = bytes[i + 3];
@@ -1133,262 +1102,552 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                             }
 
 
+                            if (bytes[1] == (byte) 0x05) {//对方收到写线圈，然后我要去读
+                                switch (BtnTag) {
+                                    case "M50":
+                                        if (m50s2 == null) {
+                                            m50s2 = Utils.getCommandBytes("M50", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m50s2);
+                                        //  commandBytes = m50s2;
+                                        Log.i("wmk", "读M50");
+                                        break;
+                                    case "M51":
+                                        if (m51s2 == null) {
+                                            m51s2 = Utils.getCommandBytes("M51", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m51s2);
+                                        //  commandBytes = m51s2;
+                                        Log.i("wmk", "读M51");
+                                        break;
+                                    case "M52":
+                                        if (m52s2 == null) {
+                                            m52s2 = Utils.getCommandBytes("M52", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m52s2);
+                                        Log.i("wmk", "读M52");
+                                        //  commandBytes = m52s2;
+                                        break;
+                                    case "M53":
+                                        if (m53s2 == null) {
+                                            m53s2 = Utils.getCommandBytes("M53", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m53s2);
+                                        Log.i("wmk", "读M53");
+                                        //  commandBytes = m53s2;
+                                        break;
+                                    case "M54":
+                                        if (m54s2 == null) {
+                                            m54s2 = Utils.getCommandBytes("M54", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m54s2);
+                                        //  commandBytes = m54s2;
+                                        Log.i("wmk", "读M54");
+                                        break;
+                                    case "M55":
+                                        if (m55s2 == null) {
+                                            m55s2 = Utils.getCommandBytes("M55", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m55s2);
+                                        //   commandBytes = m55s2;
+                                        Log.i("wmk", "读M55");
+                                        break;
+                                    case "M56":
+                                        if (m56s2 == null) {
+                                            m56s2 = Utils.getCommandBytes("M56", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m56s2);
+                                        Log.i("wmk", "读M56");
+                                        break;
+                                    case "M57":
+                                        if (m57s2 == null) {
+                                            m57s2 = Utils.getCommandBytes("M57", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m57s2);
+                                        Log.i("wmk", "读M57");
+                                        break;
+                                    case "M107":
+                                        if (m107s2 == null) {
+                                            m107s2 = Utils.getCommandBytes("M107", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m107s2);
+                                        Log.i("wmk", "读M107");
+                                        break;
+                                    case "M116":
+                                        if (m116s2 == null) {
+                                            m116s2 = Utils.getCommandBytes("M116", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m116s2);
+                                        Log.i("wmk", "读M116");
+                                        break;
+                                    case "M117":
+                                        if (m117s2 == null) {
+                                            m117s2 = Utils.getCommandBytes("M117", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m117s2);
+                                        Log.i("wmk", "读M117");
+                                        break;
+                                    case "M114":
+                                        if (m114s2 == null) {
+                                            m114s2 = Utils.getCommandBytes("M114", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m114s2);
+                                        Log.i("wmk", "读M114");
+                                        break;
+                                    case "M115":
+                                        if (m115s2 == null) {
+                                            m115s2 = Utils.getCommandBytes("M115", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m115s2);
+                                        Log.i("wmk", "读M115");
+                                        break;
+                                    case "M112":
+                                        if (m112s2 == null) {
+                                            m112s2 = Utils.getCommandBytes("M112", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m112s2);
+                                        Log.i("wmk", "读M112");
+                                        break;
+                                    case "M113":
+                                        if (m113s2 == null) {
+                                            m113s2 = Utils.getCommandBytes("M113", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m113s2);
+                                        Log.i("wmk", "读M113");
+                                        break;
+                                    case "M201":
+                                        if (m201s2 == null) {
+                                            m201s2 = Utils.getCommandBytes("M201", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m201s2);
+                                        Log.i("wmk", "读M201");
+                                        break;
+                                    case "M200":
+                                        if (m200s2 == null) {
+                                            m200s2 = Utils.getCommandBytes("M200", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m200s2);
+                                        Log.i("wmk", "读M200");
+                                        break;
+                                    case "M111":
+                                        if (m111s2 == null) {
+                                            m111s2 = Utils.getCommandBytes("M111", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m111s2);
+                                        Log.i("wmk", "读M111");
+                                        break;
+                                    case "M102":
+                                        if (m102s2 == null) {
+                                            m102s2 = Utils.getCommandBytes("M102", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m102s2);
+                                        Log.i("wmk", "读M102");
+                                        break;
+                                    case "M103":
+                                        if (m103s2 == null) {
+                                            m103s2 = Utils.getCommandBytes("M103", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m103s2);
+                                        Log.i("wmk", "读M103");
+                                        break;
+                                    case "M104":
+                                        if (m104s2 == null) {
+                                            m104s2 = Utils.getCommandBytes("M104", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m104s2);
+                                        Log.i("wmk", "读M104");
+                                        break;
+                                    case "M105":
+                                        if (m105s2 == null) {
+                                            m105s2 = Utils.getCommandBytes("M105", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m105s2);
+                                        Log.i("wmk", "读M105");
+                                        break;
+                                    case "M106":
+                                        if (m106s2 == null) {
+                                            m106s2 = Utils.getCommandBytes("M106", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m106s2);
+                                        Log.i("wmk", "读M106");
+                                        break;
+                                    case "M108":
+                                        if (m108s2 == null) {
+                                            m108s2 = Utils.getCommandBytes("M108", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m108s2);
+                                        Log.i("wmk", "读M108");
+                                        break;
+                                    case "M109":
+                                        if (m109s2 == null) {
+                                            m109s2 = Utils.getCommandBytes("M109", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m109s2);
+                                        Log.i("wmk", "读M109");
+                                        break;
+                                    case "M110":
+                                        if (m110s2 == null) {
+                                            m110s2 = Utils.getCommandBytes("M110", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m110s2);
+                                        Log.i("wmk", "读M110");
+                                        break;
+                                    case "M100":
+                                        if (m100s2 == null) {
+                                            m100s2 = Utils.getCommandBytes("M100", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m100s2);
+                                        Log.i("wmk", "读M100");
+                                        break;
+                                    case "M101":
+                                        if (m101s2 == null) {
+                                            m101s2 = Utils.getCommandBytes("M101", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m101s2);
+                                        Log.i("wmk", "读M101");
+                                        break;
+                                    case "M119":
+                                        if (m119s2 == null) {
+                                            m119s2 = Utils.getCommandBytes("M119", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m119s2);
+                                        Log.i("wmk", "读M119");
+                                        break;
+                                    case "M118":
+                                        if (m118s2 == null) {
+                                            m118s2 = Utils.getCommandBytes("M118", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m118s2);
+                                        Log.i("wmk", "读M118");
+                                        break;
+                                    case "M121":
+                                        if (m121s2 == null) {
+                                            m121s2 = Utils.getCommandBytes("M121", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m121s2);
+                                        Log.i("wmk", "读M121");
+                                        break;
+                                    case "M122":
+                                        if (m122s2 == null) {
+                                            m122s2 = Utils.getCommandBytes("M122", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m122s2);
+                                        Log.i("wmk", "读M122");
+                                        break;
+                                    case "M10":
+                                        if (m10s2 == null) {
+                                            m10s2 = Utils.getCommandBytes("M10", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m10s2);
+                                        Log.i("wmk", "读M10");
+                                        break;
+                                    case "M130":
+                                        if (m130s2 == null) {
+                                            m130s2 = Utils.getCommandBytes("M130", readPreByte, readBackByte);
+                                        }
+                                        sendCommand(m130s2);
+                                        Log.i("wmk", "读M130");
+                                        break;
+                                }
+                            }
+
+
+                            if (bytes[0] == (byte) 0x01 && bytes[1] == (byte) 0x01 && bytes[2] == (byte) 0x01
+                                    && bytes[3] == (byte) 0x00) {
+                                Log.i("wmk", "--读线圈处理00--" + Utils.bytesToHexString(bytes));
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        switch (BtnTag) {
+                                            case "M122":
+                                                itemFragment3.getFan().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--烤箱风扇结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M10":
+                                                itemFragment3.getMachine_reset().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--机械复位结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M130":
+                                                itemFragment3.getBtn_reset().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--按钮复位结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M121":
+                                                itemFragment3.getHot().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--烤箱发热丝结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M118":
+                                                itemFragment3.getMachine_switch().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--打印机开关结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M119":
+                                                itemFragment3.getMachine_power().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--打印机电源结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M100":
+                                                verticalBtn.setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--上下回原点结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M101":
+                                                horizontalBtn.setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--横向回原点结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M110":
+                                                itemFragment2.getHorizontal_out_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--横向出口结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M109":
+                                                itemFragment2.getHorizontal_hot_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--横向烤箱结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M108":
+                                                itemFragment2.getHorizontal_machine_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--横向打印机结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M106":
+                                                itemFragment2.getVertical_get_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--上下取料结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M105":
+                                                itemFragment2.getVertical_out_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--上下出口位结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M104":
+                                                itemFragment2.getVertical_hot_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--上下烤箱位结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M103":
+                                                itemFragment2.getVertical_machine_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--上下打印机位结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M102":
+                                                itemFragment2.getVertical_rotation_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--上下旋转位结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M111":
+                                                itemFragment2.getBelt_out().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--皮带出货结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M201":
+                                                itemFragment2.getOut_out().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--出货口开结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M200":
+                                                itemFragment2.getOut_in().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--出货口关结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M112":
+                                                itemFragment2.getHandspike_out().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--推杆伸出结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M113":
+                                                itemFragment2.getHandspike_in().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--推杆缩回结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M114":
+                                                itemFragment2.getHot_out().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--烤箱伸出结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M115":
+                                                itemFragment2.getHot_in().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--烤箱缩回结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M116":
+                                                itemFragment2.getMachine_out().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--打印机伸出结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M117":
+                                                itemFragment2.getMachine_in().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--打印机缩回结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M107":
+                                                itemFragment2.getHorizontal_entrepot_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--横向料仓位结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M50":
+                                                itemFragment1.getUp().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--上移结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M51":
+                                                itemFragment1.getDown().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--下移结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M52":
+                                                itemFragment1.getForward().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--前进结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M53":
+                                                itemFragment1.getBack().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--后退结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M54":
+                                                itemFragment1.getRotation1().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--出口面结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M55":
+                                                itemFragment1.getRotation2().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--打印机面结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M56":
+                                                itemFragment1.getOpen().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--张开结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                            case "M57":
+                                                itemFragment1.getClose().setBackgroundResource(R.drawable.btn_bg);
+                                                Log.i("wmk", "--夹紧结束--" + Utils.bytesToHexString(bytes));
+                                                break;
+                                        }
+                                    }
+                                });
+
+                            }
+
+                            if (bytes[0] == (byte) 0x01 && bytes[1] == (byte) 0x01 && bytes[2] == (byte) 0x01
+                                    && bytes[3] == (byte) 0x01) {
+                                Log.i("wmk", "--读线圈处理01--" + Utils.bytesToHexString(bytes));
+                                switch (BtnTag) {
+                                    case "M122":
+                                        sendCommand(m122s2);
+                                        Log.i("wmk", "--继续读烤箱风扇--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M10":
+                                        sendCommand(m10s2);
+                                        Log.i("wmk", "--继续读机械复位--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M130":
+                                        sendCommand(m130s2);
+                                        Log.i("wmk", "--继续读按钮复位--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M121":
+                                        sendCommand(m121s2);
+                                        Log.i("wmk", "--继续读烤箱发热丝--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M118":
+                                        sendCommand(m118s2);
+                                        Log.i("wmk", "--继续读打印机开关--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M119":
+                                        sendCommand(m119s2);
+                                        Log.i("wmk", "--继续读打印机电源--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M100":
+                                        sendCommand(m100s2);
+                                        Log.i("wmk", "--继续读上下回原点--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M101":
+                                        sendCommand(m101s2);
+                                        Log.i("wmk", "--继续读横向回原点--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M110":
+                                        sendCommand(m110s2);
+                                        Log.i("wmk", "--继续读横向出口位--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M109":
+                                        sendCommand(m109s2);
+                                        Log.i("wmk", "--继续读横向烤箱位--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M108":
+                                        sendCommand(m108s2);
+                                        Log.i("wmk", "--继续读横向打印位--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M106":
+                                        sendCommand(m106s2);
+                                        Log.i("wmk", "--继续读上下取料位--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M105":
+                                        sendCommand(m105s2);
+                                        Log.i("wmk", "--继续读上下出口位--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M104":
+                                        sendCommand(m104s2);
+                                        Log.i("wmk", "--继续读上下烤箱位--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M103":
+                                        sendCommand(m103s2);
+                                        Log.i("wmk", "--继续读上下打印机位--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M102":
+                                        sendCommand(m102s2);
+                                        Log.i("wmk", "--继续读上下旋转位--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M111":
+                                        sendCommand(m111s2);
+                                        Log.i("wmk", "--继续读皮带出货--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M201":
+                                        sendCommand(m201s2);
+                                        Log.i("wmk", "--继续读出货口开--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M200":
+                                        sendCommand(m200s2);
+                                        Log.i("wmk", "--继续读出货口关--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M112":
+                                        sendCommand(m112s2);
+                                        Log.i("wmk", "--继续读推杆伸出--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M113":
+                                        sendCommand(m113s2);
+                                        Log.i("wmk", "--继续读推杆缩回--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M114":
+                                        sendCommand(m114s2);
+                                        Log.i("wmk", "--继续读烤箱伸出--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M115":
+                                        sendCommand(m115s2);
+                                        Log.i("wmk", "--继续读烤箱缩回--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M116":
+                                        sendCommand(m116s2);
+                                        Log.i("wmk", "--继续读打印机伸出--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M117":
+                                        sendCommand(m117s2);
+                                        Log.i("wmk", "--继续读打印机缩回--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M107":
+                                        sendCommand(m107s2);
+                                        Log.i("wmk", "--继续读横向料仓位--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M50":
+                                        sendCommand(m50s2);
+                                        Log.i("wmk", "--继续读上移--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M51":
+                                        sendCommand(m51s2);
+                                        Log.i("wmk", "--继续读下移--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M52":
+                                        sendCommand(m52s2);
+                                        Log.i("wmk", "--继续读前进--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M53":
+                                        sendCommand(m53s2);
+                                        Log.i("wmk", "--继续读后退--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M54":
+                                        sendCommand(m54s2);
+                                        //   commandBytes = m54s2;
+                                        Log.i("wmk", "--继续读出口面--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M55":
+                                        sendCommand(m55s2);
+
+                                        Log.i("wmk", "--继续读打印机面--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M56":
+                                        sendCommand(m56s2);
+                                        Log.i("wmk", "--继续读张开--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                    case "M57":
+                                        sendCommand(m57s2);
+                                        Log.i("wmk", "--继续读夹紧--" + Utils.bytesToHexString(bytes));
+                                        break;
+                                }
+                            }
+
+
                         }
-
-
-                        //**********************查询按钮状态*************************************************/
-                /*        //上下回原点
-                        m100s1 = Utils.getCommandBytes("M100", readPreByte, readBackByte);
-                        loopThread1 = new LoopThread(socket, verticalBtn.getTag(), m100s1, myHandler);
-                        loopThread1.setNeedRead(true);
-                        loopThread1.start();
-                      //横向回原点
-                        m101s = Utils.getCommandBytes("M101", readPreByte, readBackByte);
-                        loopThread3 = new LoopThread(socket, horizontalBtn.getTag(), m101s, myHandler);
-                        loopThread3.setNeedRead(true);
-                        loopThread3.start();*/
-
-
-
-                    /*    //上移
-                        m50s = Utils.getCommandBytes("M50", readPreByte, readBackByte);
-                        loopThread4 = new LoopThread(socket, itemFragment1.getUp().getTag(), m50s, myHandler);
-                        loopThread4.setNeedRead(true);
-                        loopThread4.start();
-                        //下移
-                        m51s = Utils.getCommandBytes("M51", readPreByte, readBackByte);
-                        loopThread5 = new LoopThread(socket, itemFragment1.getDown().getTag(), m51s, myHandler);
-                        loopThread5.setNeedRead(true);
-                        loopThread5.start();
-                        //前进
-                        m52s = Utils.getCommandBytes("M52", readPreByte, readBackByte);
-                        loopThread6 = new LoopThread(socket, itemFragment1.getForward().getTag(), m52s, myHandler);
-                        loopThread6.setNeedRead(true);
-                        loopThread6.start();
-                        //后退
-                        m53s = Utils.getCommandBytes("M53", readPreByte, readBackByte);
-                        loopThread7 = new LoopThread(socket, itemFragment1.getBack().getTag(), m53s, myHandler);
-                        loopThread7.setNeedRead(true);
-                        loopThread7.start();*/
-                        //出口面
-                  /*      m54s = Utils.getCommandBytes("M54", readPreByte, readBackByte);
-                        loopThread8 = new LoopThread(socket, itemFragment1.getRotation1().getTag(), myHandler, true);*/
-                        // loopThread8.setCommandBytes(m54s);
-                        // loopThread8.start();
-                        //打印机面
-                      /*  m55s = Utils.getCommandBytes("M55", readPreByte, readBackByte);
-                        loopThread9 = new LoopThread(socket, itemFragment1.getRotation2().getTag(), myHandler, true);*/
-                        //  loopThread9.setCommandBytes(m55s);
-                        //  loopThread9.start();
-                        //张开
-                    /*    m56s = Utils.getCommandBytes("M56", readPreByte, readBackByte);
-                        loopThread10 = new LoopThread(socket, itemFragment1.getOpen().getTag(), myHandler, true);
-                      //  loopThread10.setCommandBytes(m56s);
-                        loopThread10.start();
-                        //夹紧
-                        m57s = Utils.getCommandBytes("M57", readPreByte, readBackByte);
-                        // Log.i("wmk", "指令：" + Arrays.toString(m57s));
-                        loopThread11 = new LoopThread(socket, itemFragment1.getClose().getTag(), myHandler, true);
-                      //  loopThread11.setCommandBytes(m57s);
-                        loopThread11.start();*/
-
-
-                   /*     //上下旋转位M102
-                        m102s = Utils.getCommandBytes("M102", readPreByte, readBackByte);
-                        loopThread22 = new LoopThread(socket, itemFragment2.getVertical_rotation_btn().getTag(), m102s, myHandler);
-                        loopThread22.setNeedRead(true);
-                        loopThread22.start();*/
-
-
-
-
-
-
-
-               /*         new Thread(new Runnable() {//循环读上下/横向脉冲
-                            @Override
-                            public void run() {
-                                if (socket != null) {
-                                    try {
-                                        outputStream = socket.getOutputStream();
-                                        inputStream = socket.getInputStream();
-
-                                        byte[] d5002s = Utils.getCommandBytes("D5002", readRegisterPreByte, readRegisterBackByte);
-                                        if (outputStream != null) {
-                                            outputStream.write(Utils.calcCrc16(d5002s));
-                                            outputStream.flush();
-                                        }
-                                        //sendCommand(Utils.calcCrc16(d5002s));
-
-                                        while (true) {
-                                            byte[] bytes = readInputStream(inputStream);
-                                            //Log.i("wmk", "----------" + Utils.bytesToHexString(bytes));
-                                            final String s = Utils.bytesToHexString(bytes);
-                                            final String[] s1 = s.split(" ");
-                                            if (s1.length > 6) {
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        vertical.setText(s1[3]);//数据的第一个
-                                                        horizontal.setText(s1[5]);//数据的最后一个
-                                                    }
-                                                });
-                                                //sendCommand(Utils.calcCrc16(d5002s));//循环
-                                                if (outputStream != null) {
-                                                    outputStream.write(Utils.calcCrc16(d5002s));
-                                                    outputStream.flush();
-                                                }
-                                            } else {
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        showToast("返回数据有误");
-                                                    }
-                                                });
-                                            }
-
-                                        }
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }).start();*/
-
-                       /* new Thread(new Runnable() {//第一页的数据
-                            @Override
-                            public void run() {
-                                if (socket != null) {
-                                    try {
-                                        outputStream1 = socket.getOutputStream();
-                                        inputStream1 = socket.getInputStream();
-                                        byte[] d4100s = Utils.getCommandBytes("D4100", readRegisterPreByte, readRegisterBackByte2);
-                                        if (outputStream1 != null) {
-                                            outputStream1.write(Utils.calcCrc16(d4100s));
-                                            outputStream1.flush();
-                                        }
-                                        // sendCommand(Utils.calcCrc16(d4100s));
-
-                                        while (true) {
-                                            byte[] bytes = readInputStream(inputStream1);
-                                            //Log.i("wmk", "----------" + Utils.bytesToHexString(bytes));
-                                            final String s = Utils.bytesToHexString(bytes);
-                                            final String[] s1 = s.split(" ");
-                                            if (s1.length > 6) {
-                                                EventBusMessage<String[]> message = new EventBusMessage<>();
-                                                message.setT(s1);
-                                                EventBus.getDefault().post(message,Constants.DATA_FRAGMENT_1);
-                                            } else {
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        showToast("返回数据有误");
-                                                    }
-                                                });
-                                            }
-                                        }
-
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }).start();*/
-
-                       /* new Thread(new Runnable() {//第二页的数据
-                            @Override
-                            public void run() {
-                                if (socket != null) {
-                                    try {
-                                        outputStream2 = socket.getOutputStream();
-                                        inputStream2 = socket.getInputStream();
-                                        byte[] d4100s = Utils.getCommandBytes("D4100", readRegisterPreByte, readRegisterBackByte2);
-                                        if (outputStream2 != null) {
-                                            outputStream2.write(Utils.calcCrc16(d4100s));
-                                            outputStream2.flush();
-                                        }
-                                        // sendCommand(Utils.calcCrc16(d4100s));
-
-                                        while (true) {
-                                            byte[] bytes = readInputStream(inputStream2);
-                                            //Log.i("wmk", "----------" + Utils.bytesToHexString(bytes));
-                                            final String s = Utils.bytesToHexString(bytes);
-                                            final String[] s1 = s.split(" ");
-                                            if (s1.length > 6) {
-                                                EventBusMessage<String[]> message = new EventBusMessage<>();
-                                                message.setT(s1);
-                                                EventBus.getDefault().post(message, Constants.DATA_FRAGMENT_2);
-                                            } else {
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        showToast("返回数据有误");
-                                                    }
-                                                });
-                                            }
-                                        }
-
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }).start();*/
-                        /**
-                         * 上移M50
-                         * 下移M51
-                         * 前进M52
-                         * 后退M53
-                         * 出口面M54
-                         * 打印机面M55
-                         * 张开M56
-                         * 夹紧M57
-                         */
-
-
-
-                       /* new Thread(new Runnable() {//按钮
-                            @Override
-                            public void run() {
-                                if (socket != null) {
-                                    try {
-                                        inputStream3 = socket.getInputStream();
-                                        outputStream3 = socket.getOutputStream();
-
-                                        if (outputStream3 != null) {
-                                           // byte[] m50s = Utils.getCommandBytes("M50", readPreByte, readBackByte2);
-                                            byte[] b = Utils.calcCrc16(new byte[]{0x01,0x01,0x00,0x32,0x00,0x01});
-                                          //  byte[] b1 = {0x01, 0x01, 0x00, 0x32, 0x00, 0x01, (byte) 0x92, 0x05};
-                                            outputStream3.write(b);
-                                            Log.i("wmk", "指令b---" + Arrays.toString(b));
-                                          //  Log.i("wmk", "指令b1---" + Arrays.toString(b1));
-                                            outputStream3.flush();
-                                        }
-                                        while (true) {
-                                            byte[] bytes = readInputStream(inputStream3);
-                                            //Log.i("wmk", "----------" + Utils.bytesToHexString(bytes));
-                                            final String s = Utils.bytesToHexString(bytes);
-                                            final String[] s1 = s.split(" ");
-                                            Log.i("wmk", "Btn_Data---" + Arrays.toString(s1));
-                                            if (s1.length > 6) {
-                                                EventBusMessage<String[]> message = new EventBusMessage<>();
-                                                message.setT(s1);
-                                                EventBus.getDefault().post(message, Constants.DATA_BUTTON);
-                                            } else {
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        showToast("返回数据有误");
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }).start();*/
 
 
                     }
@@ -1406,60 +1665,53 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     }
 
-    private boolean checkData(byte[] bytes) {
-        if (bytes.length < 2) {
-            // continue;
-            return true;
-        }
-        //校验
-        byte[] bytes1 = new byte[bytes.length - 2];
-        byte[] crcByte = {bytes[bytes.length - 2], bytes[bytes.length - 1]};
-        for (int i = 0; i < bytes1.length; i++) {
-            bytes1[i] = bytes[i];
-        }
-        if (!Arrays.toString(Utils.crcByte(bytes1))
-                .equals(Arrays.toString(crcByte))) {
-            sendCommand(commandBytes);//数据不对，重新请求
-            // continue;
-            return true;
-        }
-        return false;
-    }
-
+    private boolean onVerticalBtnClicked;
+    private boolean onHorizontalBtnClicked;
 
     @OnClick({R.id.back, R.id.verticalBtn, R.id.horizontalBtn,
             R.id.item1, R.id.item2, R.id.item3,
             R.id.commandTitle})
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.verticalBtn://上下回原点
-                // verticalBtn.setBackgroundResource(R.drawable.btn_click_down);
-              /*  if (m100s == null) {
-                    m100s = Utils.getCommandBytes("M100", writePreByte, writeBackByte);
+                if (!onVerticalBtnClicked) {
+                    if (m100s == null) {
+                        m100s = Utils.getCommandBytes("M100", writePreByte, writeBackByte);
+                    }
+                    sendCommand(m100s);
+                    onVerticalBtnClicked = true;
+                    verticalBtn.setBackgroundResource(R.drawable.btn_click_down);
+                    BtnTag = "M100";
+                } else {
+                    if (m100s1 == null) {
+                        m100s1 = Utils.getCommandBytes("M100", writePreByte, writeBackByte2);
+                    }
+                    sendCommand(m100s1);
+                    onVerticalBtnClicked = false;
+                    verticalBtn.setBackgroundResource(R.drawable.btn_bg);
                 }
-                if (m100s1 == null) {
-                    m100s1 = Utils.getCommandBytes("M100", readPreByte, readBackByte);
-                }
-
-                sendCommand(m100s);
-
-
-                loopThread = new LoopThread(socket, verticalBtn.getTag(), myHandler, true);
-                loopThread.setCommandBytes(m100s1);
-                loopThread.start();*/
-                //   loopThread1.setCommandBytes(m100s1);// 检查
 
                 break;
             case R.id.horizontalBtn://横向回原点
-                horizontalBtn.setBackgroundResource(R.drawable.btn_click_down);
-              /*  if (m101s1 == null) {
-                    m101s1 = Utils.getCommandBytes("M101", writePreByte, writeBackByte);
-                }*/
-                //  loopThread13 = new LoopThread(socket, horizontal.getTag(), m101s1, myHandler);
-                //loopThread13.setNeedRead(false);
-                //  loopThread13.start();
 
-                //  loopThread3.setCommandBytes(m101s);
+                if (!onHorizontalBtnClicked) {
+                    if (m101s == null) {
+                        m101s = Utils.getCommandBytes("M101", writePreByte, writeBackByte);
+                    }
+                    sendCommand(m101s);
+                    onHorizontalBtnClicked = true;
+                    horizontalBtn.setBackgroundResource(R.drawable.btn_click_down);
+                    BtnTag = "M101";
+                } else {
+                    if (m101s1 == null) {
+                        m101s1 = Utils.getCommandBytes("M101", writePreByte, writeBackByte2);
+                    }
+                    sendCommand(m101s1);
+                    onHorizontalBtnClicked = false;
+                    horizontalBtn.setBackgroundResource(R.drawable.btn_bg);
+                }
+
 
                 break;
             case R.id.back:
@@ -1476,78 +1728,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 break;
             case R.id.commandTitle:
                 sendCommand(d5002s);
-                commandBytes = d5002s;
-              /*  sendCommand(d5002s);
-                commandBytes = d5002s;
-                 byte[] bytes =null;
-                try {
-                    bytes = Utils.readInputStream(mInputStream);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Log.i("wmk", "-----readInputStream-----" + Utils.bytesToHexString(bytes));
-               // if (checkData(bytes)) return;
-                if (bytes.length < 2) {
-                    // continue;
-                    return;
-                }
-                //校验
-                byte[] bytes1 = new byte[bytes.length - 2];
-                byte[] crcByte = {bytes[bytes.length - 2], bytes[bytes.length - 1]};
-                for (int i = 0; i < bytes1.length; i++) {
-                    bytes1[i] = bytes[i];
-                }
-                if (!Arrays.toString(Utils.crcByte(bytes1))
-                        .equals(Arrays.toString(crcByte))) {
-                    sendCommand(commandBytes);//数据不对，重新请求
-                    // continue;
-                    return;
-                }
-               // return false;
 
-
-                //计算数据  1176  67296-66976
-
-                byte[] dataByte = new byte[bytes.length - 5];
-                for (int i = 0; i < dataByte.length; i++) {
-                    dataByte[i] = bytes[i + 3];
-                }
-                for (int i = 0; i < dataByte.length / 4; i++) {
-                    byte[] itemByte = new byte[4];
-                    for (int j = 0; j < 4; j++) {
-                        itemByte[j] = dataByte[4 * i + j];
-                    }
-                    if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
-                        readData = 65536 - Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]});
-                    } else {
-                        readData = Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]}) +
-                                Utils.bytesToInt(new byte[]{itemByte[2], itemByte[3]});
-                    }
-                    finalData.add(readData);
-                }
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        vertical.setText(String.valueOf(finalData.get(0)));
-                        horizontal.setText(String.valueOf(finalData.get(1)));
-                        finalData.clear();
-                               *//*     try {
-                                        if (socket != null) {
-                                            socket.close();
-                                        }
-                                        if (mOutputStream != null) {
-                                            mOutputStream.close();
-                                        }
-                                        if (mInputStream != null) {
-                                            mInputStream.close();
-                                        }
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }*//*
-                    }
-                });
-                // }*/
                 break;
         }
     }
@@ -1575,9 +1756,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
 
     private void sendCommand(byte[] bytes) {
+
+        commandBytes = bytes;
         try {
             if (mOutputStream != null) {
-                mOutputStream.write(Utils.calcCrc16(bytes));
+                mOutputStream.write(Utils.calcCrc16(commandBytes));
                 mOutputStream.flush();
             }
         } catch (IOException e) {
