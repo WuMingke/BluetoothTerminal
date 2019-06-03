@@ -1,6 +1,7 @@
 package com.whosssmade.bluetoothterminal.ui.fragments;
 
 import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import com.whosssmade.bluetoothterminal.ui.dialogs.SetValueDialog;
 import org.simple.eventbus.Subscriber;
 
 import java.nio.channels.NonReadableChannelException;
+import java.util.Arrays;
 import java.util.IdentityHashMap;
 import java.util.concurrent.TimeoutException;
 
@@ -150,6 +152,30 @@ public class ItemFragment1 extends BaseFragment<ItemPresenter1> implements ItemC
 
     }
 
+    public interface OnFragment1BtnClick {
+        void onUpClick();
+
+        void onDownClick();
+
+        void onForwardClick();
+
+        void onBackClick();
+
+        void onRotation1Click();
+
+        void onRotation2Click();
+
+        void onOpenClick();
+
+        void onCloseClick();
+    }
+
+    private OnFragment1BtnClick onFragment1BtnClick;
+
+    public void setOnFragment1BtnClick(OnFragment1BtnClick onFragment1BtnClick) {
+        this.onFragment1BtnClick = onFragment1BtnClick;
+    }
+
     @OnClick({R.id.pulse1, R.id.frequency1,
             R.id.pulse2, R.id.frequency2,
             R.id.pulse3, R.id.frequency3,
@@ -159,6 +185,7 @@ public class ItemFragment1 extends BaseFragment<ItemPresenter1> implements ItemC
             R.id.entrepot,
             R.id.bottom_pulse,
             R.id.thickness_pulse,
+            R.id.up, R.id.down, R.id.forward, R.id.back, R.id.rotation1, R.id.rotation2, R.id.open, R.id.close
     })
     public void onClick(View view) {
         switch (view.getId()) {
@@ -220,22 +247,28 @@ public class ItemFragment1 extends BaseFragment<ItemPresenter1> implements ItemC
                 dialogSetTextView(thickness_pulse);
                 break;
             case R.id.up://上移
-
+                onFragment1BtnClick.onUpClick();
                 break;
             case R.id.down://下移
+                onFragment1BtnClick.onDownClick();
                 break;
-
             case R.id.forward://前进
+                onFragment1BtnClick.onForwardClick();
                 break;
             case R.id.back://后退
+                onFragment1BtnClick.onBackClick();
                 break;
             case R.id.rotation1://出口面
+                onFragment1BtnClick.onRotation1Click();
                 break;
             case R.id.rotation2://打印机面
+                onFragment1BtnClick.onRotation2Click();
                 break;
             case R.id.open://张开
+                onFragment1BtnClick.onOpenClick();
                 break;
             case R.id.close://夹紧
+                onFragment1BtnClick.onCloseClick();
                 break;
 
 
@@ -246,7 +279,8 @@ public class ItemFragment1 extends BaseFragment<ItemPresenter1> implements ItemC
     public void setBtnState(EventBusMessage<String[]> message) {
         if (message.getT() != null) {
             String[] strings = message.getT();
-         /*   up.setBackgroundResource();//上移
+            Log.i("wmk", "Btn_Data---" + Arrays.toString(strings));
+          /*  up.setBackgroundResource();//上移
             down.setBackgroundResource();//下移
             forward.setBackgroundResource();//前进
             back.setBackgroundResource();//后退

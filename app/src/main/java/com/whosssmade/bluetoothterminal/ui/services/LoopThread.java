@@ -1,3 +1,4 @@
+/*
 package com.whosssmade.bluetoothterminal.ui.services;
 
 import android.bluetooth.BluetoothSocket;
@@ -11,7 +12,7 @@ import com.whosssmade.bluetoothterminal.utils.Utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
+import java.util.Arrays;
 
 
 public class LoopThread extends Thread {
@@ -23,10 +24,12 @@ public class LoopThread extends Thread {
     private String tag;
     private Bundle bundle;
     private boolean needRead;
+    private byte[] commandBytes;
 
     public void setNeedRead(boolean needRead) {
         this.needRead = needRead;
     }
+
 
     public void makeStop() {
         try {
@@ -48,8 +51,10 @@ public class LoopThread extends Thread {
         try {
             if (mOutputStream != null) {
                 byte[] b = Utils.calcCrc16(commandBytes);
+                commandBytes = b;
                 mOutputStream.write(b);
                 mOutputStream.flush();
+                Log.i("wmk", "---最终发送的指令---" + Arrays.toString(b));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -57,13 +62,14 @@ public class LoopThread extends Thread {
 
     }
 
-    public LoopThread(BluetoothSocket socket,Object tag,byte[] commandBytes,Handler handler) {
+    public LoopThread(BluetoothSocket socket, Object tag, Handler handler, boolean needRead) {
         this.mSocket = socket;
+        this.needRead = needRead;
         try {
             mInputStream = mSocket.getInputStream();
             mOutputStream = mSocket.getOutputStream();
             this.tag = (String) tag;
-            setCommandBytes(commandBytes);
+            // setCommandBytes(commandBytes);
             this.handler = handler;
             bundle = new Bundle();
         } catch (IOException e) {
@@ -79,15 +85,17 @@ public class LoopThread extends Thread {
                 while (needRead) {
                     if (mInputStream != null) {
                         byte[] bytes = Utils.readInputStream(mInputStream);
+                        if (bytes.equals(commandBytes)) continue;
                         //Log.i("wmk", "----------" + Utils.bytesToHexString(byt
-                        final String s = Utils.bytesToHexString(bytes);
-                        final String[] s1 = s.split(" ");
+                        //final String s = Utils.bytesToHexString(bytes);
+                        String string = Arrays.toString(bytes);
+                        final String[] s1 = string.split(",");
                         if (s1.length > 4) {
                             Message msg = handler.obtainMessage();
                             msg.obj = tag;
                             msg.what = 1;
-                            bundle.putString("data",s1[3]);
-                            Log.i("wmk","----thread-data----"+s1[3]);
+                            bundle.putString("data", s1[3]);
+                            Log.i("wmk", "----thread-all-data----" + string);
                             msg.setData(bundle);
                             handler.sendMessage(msg);
 
@@ -108,3 +116,4 @@ public class LoopThread extends Thread {
         }
     }
 }
+*/

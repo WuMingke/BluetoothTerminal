@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,7 +13,10 @@ import com.whosssmade.bluetoothterminal.R;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static java.lang.Thread.sleep;
 
@@ -22,14 +26,22 @@ import static java.lang.Thread.sleep;
 
 public class Utils {
 
+   /* public static List<String> getPulseData() {
+        List<String> list = new ArrayList<>();
+        list.add("D5002");
+       // list.add("D5004");
+        return list;
+    }*/
+
     public static void setBtnState(String data, TextView textView) {
-        if (data.equals("00")) {
+        if (data.equals(" 0")) {
             setTextClickUp(textView);
         }
-        if (data.equals("01")) {
+        if (data.equals(" 1")) {
             setTextClickDown(textView);
         }
     }
+
     public static byte[] readInputStream(InputStream inputStream) throws IOException {
         int len = 0;
         while (len == 0) {
@@ -68,18 +80,16 @@ public class Utils {
             case "M":
             case "D":
                 Integer integer = Integer.valueOf(substring);
-                // Log.i("wmk","-----"+substring);
-                String s1 = Integer.toHexString(integer);
-                //Log.i("wmk","-----"+s1);
-                Integer integer1 = Integer.valueOf(substring);//十六进制 整形
-                byte[] bytes = intToByteArray(integer1);
+                //Log.i("wmk","getCommandBytes---substring--"+substring);
+                // String s1 = Integer.toHexString(integer);
+                //Log.i("wmk","getCommandBytes---s1--"+s1);
+                //Integer integer1 = Integer.valueOf(s1);//十六进制 整形
+                byte[] bytes = intToByteArray(integer);
                 commandBytes = concatAll(preBytes, bytes, backBytes);
-                //String s2 = bytesToHexString2(commandBytes);
-                //Log.i("wmk","-----"+s2);
+                // Log.i("wmk","getCommandBytes---commandBytes--"+Arrays.toString(commandBytes));
 
                 break;
 
-            // break;
         }
         return commandBytes;
     }
@@ -102,6 +112,10 @@ public class Utils {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(textView);
         toast.show();
+    }
+
+    public static void mainLog(String s) {
+        Log.i("wmk", s);
     }
 
 
@@ -128,12 +142,30 @@ public class Utils {
         int value = calcCrc16(data, 0, data.length);
 
         byte[] crcByte = new byte[2];
-        crcByte[1] = (byte) ((value >> 8) & 0xff);
         crcByte[0] = (byte) (value & 0xff);
+        crcByte[1] = (byte) ((value >> 8) & 0xff);
 
+       // Log.i("wmk", "初始值：---" + Arrays.toString(crcByte));
 
         return concatAll(data, crcByte);
     }
+
+    public static byte[] crcByte(byte[] data){
+        int value = calcCrc16(data, 0, data.length);
+
+        byte[] crcByte = new byte[2];
+        crcByte[0] = (byte) (value & 0xff);
+        crcByte[1] = (byte) ((value >> 8) & 0xff);
+        return crcByte;
+    }
+
+    public static int bytesToInt(byte[] src) {
+        int value;
+        value = (((src[0] & 0xFF) << 8)
+                | ((src[1] & 0xFF)));
+        return value;
+    }
+
 
     /**
      * 计算CRC16校验

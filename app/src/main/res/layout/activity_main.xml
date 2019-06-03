@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/back"
             android:gravity="center_vertical"
-            android:text="收到的命令："
+            android:text="查询"
             android:textColor="@color/white" />
 
         <TextView
