@@ -93,7 +93,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="4000" />
+                tools:text="4000" />
 
             <TextView
                 android:id="@+id/frequency1"
@@ -101,7 +101,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="4000" />
+                tools:text="4000" />
         </LinearLayout>
 
         <LinearLayout
@@ -345,7 +345,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="4000" />
+                tools:text="4000" />
 
             <TextView
                 android:id="@+id/entrepot1_pulse"
@@ -393,7 +393,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="4000" />
+                tools:text="4000" />
 
             <TextView
                 android:id="@+id/entrepot1_quantity"
