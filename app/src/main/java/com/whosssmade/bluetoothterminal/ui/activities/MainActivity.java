@@ -38,8 +38,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
+import java.time.temporal.ValueRange;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -87,6 +89,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private static final byte[] readPreByte = new byte[]{0x01, 0x01};
     private static final byte[] readBackByte = new byte[]{0x00, 0x01};
     private static final byte[] readBackByte2 = new byte[]{0x00, 0x08};//M50-M57
+    private static final byte[] readBackByte3 = new byte[]{0x00, 0x04};
+    private static final byte[] readBackByte4 = new byte[]{0x00, 0x02};
     private static final byte[] writePreByte = new byte[]{0x01, 0x05};
     private static final byte[] writeBackByte = new byte[]{(byte) 0xFF, 0x00};
     private static final byte[] writeBackByte2 = new byte[]{0x00, 0x00};
@@ -95,6 +99,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     private static final byte[] readRegisterPreByte = new byte[]{0x01, 0x03};
     private static final byte[] readRegisterBackByte = new byte[]{0x00, 0x04};
+    private static final byte[] readRegisterBackByte2 = new byte[]{0x00, 0x10};//第一部分16个
+    private static final byte[] readRegisterBackByte3 = new byte[]{0x00, 0x14};//第二部分20个
+    private static final byte[] readRegisterBackByte4 = new byte[]{0x00, 0x08};//第二部分8个
+    private static final byte[] readRegisterBackByte5 = new byte[]{0x00, 0x04};//第二部分4个
+    private static final byte[] readRegisterBackByte6 = new byte[]{0x00, 0x08};//第二部分4个 ??
+
+    private static final byte[] writeRegisterPreByte = new byte[]{0x01, 0x05};
 
     private ItemFragmentPagerAdapter pagerAdapter;
 
@@ -216,6 +227,39 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private byte[] m122s2;
     private byte[] m10s2;
     private byte[] m130s2;
+    private byte[] m58s;
+    private byte[] m58s1;
+    private byte[] m58s2;
+    private byte[] d4000s;
+
+    private boolean isReadD5002;
+    private boolean isReadD4000;
+    private byte[] d4100s;
+    private boolean isReadD4100;
+    private byte[] d4020s;
+    private boolean isReadD4020;
+    private boolean isReadD4210;
+    private byte[] d4210s;
+    private boolean isReadD4200;
+    private byte[] d4200s;
+    private boolean isFirstCheckBtn;
+    private byte[] m50s3;
+    private boolean isSecondCheckBtn;
+    private byte[] m58s3;
+    private boolean isThirdCheckBtn;
+    private byte[] m100s3;
+    private boolean isForthCheckBtn;
+    private byte[] m108s3;
+    private boolean isFifthCheckBtn;
+    private byte[] m112s3;
+    private boolean isSixthCheckBtn;
+    private byte[] m200s3;
+    private boolean isSeventhCheckBtn;
+    private byte[] m121s3;
+    private boolean isEighthCheckBtn;
+    private byte[] m10s3;
+    private boolean isNinthCheckBtn;
+    private byte[] m130s3;
 
 
     /**
@@ -621,9 +665,26 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         }
     }
 
+    private boolean onDown_pulse_btnClicked;
+
     @Override
     public void onDown_pulse_btnClick() {
-
+        if (!onDown_pulse_btnClicked) {
+            if (m58s == null) {
+                m58s = Utils.getCommandBytes("M58", writePreByte, writeBackByte);
+            }
+            sendCommand(m58s);
+            onDown_pulse_btnClicked = true;
+            itemFragment2.getDown_pulse_btn().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M58";
+        } else {
+            if (m58s1 == null) {
+                m58s1 = Utils.getCommandBytes("M58", writePreByte, writeBackByte2);
+            }
+            sendCommand(m58s1);
+            onDown_pulse_btnClicked = false;
+            itemFragment2.getDown_pulse_btn().setBackgroundResource(R.drawable.btn_bg);
+        }
     }
 
     /*
@@ -1041,11 +1102,34 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                         mOutputStream = socket.getOutputStream();
 
                         //读脉冲
+                        //上面两个
                         d5002s = Utils.getCommandBytes("D5002", readRegisterPreByte, readRegisterBackByte);
-                        Log.i("wmk", "命令：" + Utils.bytesToHexString(d5002s));
-
+                        //Log.i("wmk", "命令：" + Utils.bytesToHexString(d5002s));
                         sendCommand(d5002s);
-                        // commandBytes = d5002s;
+                        isReadD5002 = true;
+                        //下面数据
+                        //脉冲/频率
+                        d4000s = Utils.getCommandBytes("D4000", readRegisterPreByte, readRegisterBackByte2);
+                        //第二页数值
+                        d4100s = Utils.getCommandBytes("D4100", readRegisterPreByte, readRegisterBackByte3);
+                        //横向脉冲
+                        d4020s = Utils.getCommandBytes("D4020", readRegisterPreByte, readRegisterBackByte4);
+                        //放料数量
+                        d4210s = Utils.getCommandBytes("D4210", readRegisterPreByte, readRegisterBackByte5);
+                        //取货料仓/底部脉冲/料厚脉冲
+                        d4200s = Utils.getCommandBytes("D4200", readRegisterPreByte, readRegisterBackByte6);
+
+                        //读按钮
+                        m50s3 = Utils.getCommandBytes("M50", readPreByte, readBackByte2);
+                        m58s3 = Utils.getCommandBytes("M58", readPreByte, readBackByte);
+                        m100s3 = Utils.getCommandBytes("M100", readPreByte, readBackByte2);
+                        m108s3 = Utils.getCommandBytes("M108", readPreByte, readBackByte3);
+                        m112s3 = Utils.getCommandBytes("M112", readPreByte, readBackByte2);
+                        m200s3 = Utils.getCommandBytes("M200", readPreByte, readBackByte4);
+                        m121s3 = Utils.getCommandBytes("M121", readPreByte, readBackByte4);
+                        m10s3 = Utils.getCommandBytes("M10", readPreByte, readBackByte);
+                        m130s3 = Utils.getCommandBytes("M130", readPreByte, readBackByte);
+
 
                         while (true) {
 
@@ -1071,8 +1155,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
                             //计算数据  1176  67296-66976
 
-                            if (bytes[1] == (byte) 0x03) {
-                                Log.i("wmk", "--读寄存器处理--" + Utils.bytesToHexString(bytes));
+                            if (bytes[1] == (byte) 0x03 && isReadD5002) {
+                                Log.i("wmk", "--读寄存器处理D5002--" + Utils.bytesToHexString(bytes));
                                 byte[] dataByte = new byte[bytes.length - 5];
                                 for (int i = 0; i < dataByte.length; i++) {
                                     dataByte[i] = bytes[i + 3];
@@ -1097,6 +1181,618 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         vertical.setText(String.valueOf(finalData.get(0)));
                                         horizontal.setText(String.valueOf(finalData.get(1)));
                                         finalData.clear();
+                                        isReadD5002 = false;
+                                        sendCommand(d4000s);
+                                        isReadD4000 = true;
+                                    }
+                                });
+
+                            }
+
+                            if (bytes[1] == (byte) 0x03 && isReadD4000) {
+                                Log.i("wmk", "--读寄存器处理D4000--" + Utils.bytesToHexString(bytes));
+                                byte[] dataByte = new byte[bytes.length - 5];
+                                for (int i = 0; i < dataByte.length; i++) {
+                                    dataByte[i] = bytes[i + 3];
+                                }
+                                for (int i = 0; i < dataByte.length / 4; i++) {
+                                    byte[] itemByte = new byte[4];
+                                    for (int j = 0; j < 4; j++) {
+                                        itemByte[j] = dataByte[4 * i + j];
+                                    }
+                                    if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
+                                        readData = 65536 - Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]});
+                                    } else {
+                                        readData = Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]}) +
+                                                Utils.bytesToInt(new byte[]{itemByte[2], itemByte[3]});
+                                    }
+                                    finalData.add(readData);
+                                }
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        isReadD4000 = false;
+                                        itemFragment1.getPulse1().setText(String.valueOf(finalData.get(0)));
+                                        itemFragment1.getFrequency1().setText(String.valueOf(finalData.get(1)));
+                                        itemFragment1.getPulse2().setText(String.valueOf(finalData.get(2)));
+                                        itemFragment1.getFrequency2().setText(String.valueOf(finalData.get(3)));
+                                        itemFragment1.getPulse3().setText(String.valueOf(finalData.get(4)));
+                                        itemFragment1.getFrequency3().setText(String.valueOf(finalData.get(5)));
+                                        itemFragment1.getPulse4().setText(String.valueOf(finalData.get(6)));
+                                        itemFragment1.getFrequency4().setText(String.valueOf(finalData.get(7)));
+                                        finalData.clear();
+                                        sendCommand(d4100s);
+                                        isReadD4100 = true;
+                                    }
+                                });
+                            }
+
+                            if (bytes[1] == (byte) 0x03 && isReadD4100) {
+                                Log.i("wmk", "--读寄存器处理D4100--" + Utils.bytesToHexString(bytes));
+                                byte[] dataByte = new byte[bytes.length - 5];
+                                for (int i = 0; i < dataByte.length; i++) {
+                                    dataByte[i] = bytes[i + 3];
+                                }
+                                for (int i = 0; i < dataByte.length / 4; i++) {
+                                    byte[] itemByte = new byte[4];
+                                    for (int j = 0; j < 4; j++) {
+                                        itemByte[j] = dataByte[4 * i + j];
+                                    }
+                                    if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
+                                        readData = 65536 - Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]});
+                                    } else {
+                                        readData = Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]}) +
+                                                Utils.bytesToInt(new byte[]{itemByte[2], itemByte[3]});
+                                    }
+                                    finalData.add(readData);
+                                }
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        isReadD4100 = false;
+                                        itemFragment2.getVertical_rotation().setText(String.valueOf(finalData.get(0)));
+                                        itemFragment2.getVertical_machine().setText(String.valueOf(finalData.get(1)));
+                                        itemFragment2.getVertical_hot().setText(String.valueOf(finalData.get(2)));
+                                        itemFragment2.getVertical_out().setText(String.valueOf(finalData.get(3)));
+                                        itemFragment2.getVertical_get().setText(String.valueOf(finalData.get(8)));
+                                        itemFragment2.getHorizontal_entrepot().setText(String.valueOf(finalData.get(4)));
+                                        itemFragment2.getHorizontal_machine().setText(String.valueOf(finalData.get(5)));
+                                        itemFragment2.getHorizontal_hot().setText(String.valueOf(finalData.get(6)));
+                                        itemFragment2.getHorizontal_out().setText(String.valueOf(finalData.get(7)));
+                                        itemFragment2.getDown_pulse().setText(String.valueOf(finalData.get(9)));
+                                        finalData.clear();
+                                        sendCommand(d4020s);
+                                        isReadD4020 = true;
+                                    }
+                                });
+                            }
+
+                            if (bytes[1] == (byte) 0x03 && isReadD4020) {
+                                Log.i("wmk", "--读寄存器处理D4020--" + Utils.bytesToHexString(bytes));
+                                byte[] dataByte = new byte[bytes.length - 5];
+                                for (int i = 0; i < dataByte.length; i++) {
+                                    dataByte[i] = bytes[i + 3];
+                                }
+                                for (int i = 0; i < dataByte.length / 4; i++) {
+                                    byte[] itemByte = new byte[4];
+                                    for (int j = 0; j < 4; j++) {
+                                        itemByte[j] = dataByte[4 * i + j];
+                                    }
+                                    if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
+                                        readData = 65536 - Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]});
+                                    } else {
+                                        readData = Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]}) +
+                                                Utils.bytesToInt(new byte[]{itemByte[2], itemByte[3]});
+                                    }
+                                    finalData.add(readData);
+                                }
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        isReadD4020 = false;
+                                        itemFragment1.getEntrepot0_pulse().setText(String.valueOf(finalData.get(0)));
+                                        itemFragment1.getEntrepot1_pulse().setText(String.valueOf(finalData.get(1)));
+                                        itemFragment1.getEntrepot2_pulse().setText(String.valueOf(finalData.get(2)));
+                                        itemFragment1.getEntrepot3_pulse().setText(String.valueOf(finalData.get(3)));
+                                        finalData.clear();
+                                        sendCommand(d4210s);
+                                        isReadD4210 = true;
+                                    }
+                                });
+                            }
+
+                            if (bytes[1] == (byte) 0x03 && isReadD4210) {//数据只有一个点位
+                                Log.i("wmk", "--读寄存器处理D4210--" + Utils.bytesToHexString(bytes));
+                                //  01 03 08    00 01 00 01 00 01 00 01   28 d7
+                                byte[] dataByte = new byte[bytes.length - 5];
+                                for (int i = 0; i < dataByte.length; i++) {
+                                    dataByte[i] = bytes[i + 3];
+                                }
+                                for (int i = 0; i < dataByte.length / 2; i++) {//4
+                                    byte[] itemByte = new byte[2];
+                                    for (int j = 0; j < 2; j++) {
+                                        itemByte[j] = dataByte[2 * i + j];
+                                    }
+                                    int i1 = Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]});
+                                    finalData.add(i1);
+                                }
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        isReadD4210 = false;
+                                        itemFragment1.getEntrepot0_quantity().setText(String.valueOf(finalData.get(0)));
+                                        itemFragment1.getEntrepot1_quantity().setText(String.valueOf(finalData.get(1)));
+                                        itemFragment1.getEntrepot2_quantity().setText(String.valueOf(finalData.get(2)));
+                                        itemFragment1.getEntrepot3_quantity().setText(String.valueOf(finalData.get(3)));
+                                        finalData.clear();
+                                        sendCommand(d4200s);
+                                        isReadD4200 = true;
+                                    }
+                                });
+                            }
+
+                            if (bytes[1] == (byte) 0x03 && isReadD4200) {
+                                Log.i("wmk", "--读寄存器处理D4200--" + Utils.bytesToHexString(bytes));
+                                //00 00    00 01   0f a0    00 00    00 00    d0 90       00 03 00 00
+                                //                  4000                      53392
+                               /* byte[] dataByte = new byte[bytes.length - 5];
+                                for (int i = 0; i < dataByte.length; i++) {
+                                    dataByte[i] = bytes[i + 3];
+                                }
+                                for (int i = 0; i < dataByte.length / 4; i++) {
+                                    byte[] itemByte = new byte[4];
+                                    for (int j = 0; j < 4; j++) {
+                                        itemByte[j] = dataByte[4 * i + j];
+                                    }
+                                    if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
+                                        readData = 65536 - Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]});
+                                    } else {
+                                        readData = Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]}) +
+                                                Utils.bytesToInt(new byte[]{itemByte[2], itemByte[3]});
+                                    }
+                                    finalData.add(readData);
+                                }*/
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        isReadD4200 = false;
+                                        //   itemFragment1.getEntrepot().setText();
+                                        // itemFragment1.getBottom_pulse().setText();
+                                        //itemFragment1.getThickness_pulse().setText();
+                                        finalData.clear();
+                                        isFirstCheckBtn = true;
+                                        sendCommand(m50s3);
+                                        Log.i("wmk", "--m50s3--" + Utils.bytesToHexString(m50s3));
+                                    }
+                                });
+                            }
+
+                            if (isFirstCheckBtn) {
+                                isFirstCheckBtn = false;
+                                String format = String.format("%8s", Integer.toBinaryString(bytes[3] & 0xFF)).replace(' ', '0');
+                                Log.i("wmk", "--读按钮format--" + format);
+                                Log.i("wmk", "--读按钮--" + Utils.bytesToHexString(bytes));
+                                final ArrayList<String> strings = new ArrayList<>();
+                                for (int i = 0; i < format.length(); i++) {
+                                    String substring = format.substring(i, i + 1);
+                                    strings.add(substring);
+                                }
+                                Collections.reverse(strings);
+                                Log.i("wmk", "--倒序--" + strings.toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (strings.get(0).equals("0")) {
+                                            itemFragment1.getUp().setBackgroundResource(R.drawable.btn_bg);
+                                            onUpClicked = false;
+                                        } else {
+                                            itemFragment1.getUp().setBackgroundResource(R.drawable.btn_click_down);
+                                            onUpClicked = true;
+                                        }
+                                        if (strings.get(1).equals("0")) {
+                                            itemFragment1.getDown().setBackgroundResource(R.drawable.btn_bg);
+                                            onDownClicked = false;
+                                        } else {
+                                            itemFragment1.getDown().setBackgroundResource(R.drawable.btn_click_down);
+                                            onDownClicked = true;
+                                        }
+                                        if (strings.get(2).equals("0")) {
+                                            itemFragment1.getForward().setBackgroundResource(R.drawable.btn_bg);
+                                            onForwardClicked = false;
+                                        } else {
+                                            itemFragment1.getForward().setBackgroundResource(R.drawable.btn_click_down);
+                                            onForwardClicked = true;
+                                        }
+                                        if (strings.get(3).equals("0")) {
+                                            itemFragment1.getBack().setBackgroundResource(R.drawable.btn_bg);
+                                            onBackClicked = false;
+                                        } else {
+                                            itemFragment1.getBack().setBackgroundResource(R.drawable.btn_click_down);
+                                            onBackClicked = true;
+                                        }
+                                        if (strings.get(4).equals("0")) {
+                                            itemFragment1.getRotation1().setBackgroundResource(R.drawable.btn_bg);
+                                            onRotation1Clicked = false;
+                                        } else {
+                                            itemFragment1.getRotation1().setBackgroundResource(R.drawable.btn_click_down);
+                                            onRotation1Clicked = true;
+                                        }
+                                        if (strings.get(5).equals("0")) {
+                                            itemFragment1.getRotation2().setBackgroundResource(R.drawable.btn_bg);
+                                            onRotation2Clicked = false;
+                                        } else {
+                                            itemFragment1.getRotation2().setBackgroundResource(R.drawable.btn_click_down);
+                                            onRotation2Clicked = true;
+                                        }
+                                        if (strings.get(6).equals("0")) {
+                                            itemFragment1.getOpen().setBackgroundResource(R.drawable.btn_bg);
+                                            onOpenClicked = false;
+                                        } else {
+                                            itemFragment1.getOpen().setBackgroundResource(R.drawable.btn_click_down);
+                                            onOpenClicked = true;
+                                        }
+                                        if (strings.get(7).equals("0")) {
+                                            itemFragment1.getClose().setBackgroundResource(R.drawable.btn_bg);
+                                            onCloseClicked = false;
+                                        } else {
+                                            itemFragment1.getClose().setBackgroundResource(R.drawable.btn_click_down);
+                                            onCloseClicked = true;
+                                        }
+                                        sendCommand(m58s3);
+                                        isSecondCheckBtn = true;
+                                    }
+                                });
+
+                            }
+                            if (isSecondCheckBtn) {
+                                isSecondCheckBtn = false;
+                                String format = String.format("%1s", Integer.toBinaryString(bytes[3] & 0xFF)).replace(' ', '0');
+                                Log.i("wmk", "--读按钮format2--" + format);
+                                Log.i("wmk", "--读按钮2--" + Utils.bytesToHexString(bytes));
+                                final ArrayList<String> strings = new ArrayList<>();
+                                for (int i = 0; i < format.length(); i++) {
+                                    String substring = format.substring(i, i + 1);
+                                    strings.add(substring);
+                                }
+                                Collections.reverse(strings);
+                                Log.i("wmk", "--倒序2--" + strings.toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (strings.get(0).equals("0")) {
+                                            itemFragment2.getDown_pulse_btn().setBackgroundResource(R.drawable.btn_bg);
+                                            onDown_pulse_btnClicked = false;
+                                        } else {
+                                            itemFragment2.getDown_pulse_btn().setBackgroundResource(R.drawable.btn_click_down);
+                                            onDown_pulse_btnClicked = true;
+                                        }
+                                        sendCommand(m100s3);
+                                        isThirdCheckBtn = true;
+                                    }
+                                });
+                            }
+                            if (isThirdCheckBtn) {
+                                isThirdCheckBtn = false;
+                                String format = String.format("%8s", Integer.toBinaryString(bytes[3] & 0xFF)).replace(' ', '0');
+                                Log.i("wmk", "--读按钮format3--" + format);
+                                Log.i("wmk", "--读按钮3--" + Utils.bytesToHexString(bytes));
+                                final ArrayList<String> strings = new ArrayList<>();
+                                for (int i = 0; i < format.length(); i++) {
+                                    String substring = format.substring(i, i + 1);
+                                    strings.add(substring);
+                                }
+                                Collections.reverse(strings);
+                                Log.i("wmk", "--倒序3--" + strings.toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (strings.get(0).equals("0")) {
+                                            verticalBtn.setBackgroundResource(R.drawable.btn_bg);
+                                            onVerticalBtnClicked = false;
+                                        } else {
+                                            verticalBtn.setBackgroundResource(R.drawable.btn_click_down);
+                                            onVerticalBtnClicked = true;
+                                        }
+                                        if (strings.get(1).equals("0")) {
+                                            horizontalBtn.setBackgroundResource(R.drawable.btn_bg);
+                                            onHorizontalBtnClicked = false;
+                                        } else {
+                                            horizontalBtn.setBackgroundResource(R.drawable.btn_click_down);
+                                            onHorizontalBtnClicked = true;
+                                        }
+                                        if (strings.get(2).equals("0")) {
+                                            itemFragment2.getVertical_rotation_btn().setBackgroundResource(R.drawable.btn_bg);
+                                            onVertical_rotation_btnClicked = false;
+                                        } else {
+                                            itemFragment2.getVertical_rotation_btn().setBackgroundResource(R.drawable.btn_click_down);
+                                            onVertical_rotation_btnClicked = true;
+                                        }
+                                        if (strings.get(3).equals("0")) {
+                                            itemFragment2.getVertical_machine_btn().setBackgroundResource(R.drawable.btn_bg);
+                                            onVertical_machine_btnClicked = false;
+                                        } else {
+                                            itemFragment2.getVertical_machine_btn().setBackgroundResource(R.drawable.btn_click_down);
+                                            onVertical_machine_btnClicked = true;
+                                        }
+                                        if (strings.get(4).equals("0")) {
+                                            itemFragment2.getVertical_hot_btn().setBackgroundResource(R.drawable.btn_bg);
+                                            onVertical_hot_btnClicked = false;
+                                        } else {
+                                            itemFragment2.getVertical_hot_btn().setBackgroundResource(R.drawable.btn_click_down);
+                                            onVertical_hot_btnClicked = true;
+                                        }
+                                        if (strings.get(5).equals("0")) {
+                                            itemFragment2.getVertical_out_btn().setBackgroundResource(R.drawable.btn_bg);
+                                            onVertical_out_btnClicked = false;
+                                        } else {
+                                            itemFragment2.getVertical_out_btn().setBackgroundResource(R.drawable.btn_click_down);
+                                            onVertical_out_btnClicked = true;
+                                        }
+                                        if (strings.get(6).equals("0")) {
+                                            itemFragment2.getVertical_get_btn().setBackgroundResource(R.drawable.btn_bg);
+                                            onVertical_get_btnClicked = false;
+                                        } else {
+                                            itemFragment2.getVertical_get_btn().setBackgroundResource(R.drawable.btn_click_down);
+                                            onVertical_get_btnClicked = true;
+                                        }
+                                        if (strings.get(7).equals("0")) {
+                                            itemFragment2.getHorizontal_entrepot_btn().setBackgroundResource(R.drawable.btn_bg);
+                                            onHorizontal_entrepot_btnClicked = false;
+                                        } else {
+                                            itemFragment2.getHorizontal_entrepot_btn().setBackgroundResource(R.drawable.btn_click_down);
+                                            onHorizontal_entrepot_btnClicked = true;
+                                        }
+                                        sendCommand(m108s3);
+                                        isForthCheckBtn = true;
+                                    }
+                                });
+                            }
+                            if (isForthCheckBtn) {
+                                isForthCheckBtn = false;
+                                String format = String.format("%4s", Integer.toBinaryString(bytes[3] & 0xFF)).replace(' ', '0');
+                                Log.i("wmk", "--读按钮format4--" + format);
+                                Log.i("wmk", "--读按钮4--" + Utils.bytesToHexString(bytes));
+                                final ArrayList<String> strings = new ArrayList<>();
+                                for (int i = 0; i < format.length(); i++) {
+                                    String substring = format.substring(i, i + 1);
+                                    strings.add(substring);
+                                }
+                                Collections.reverse(strings);
+                                Log.i("wmk", "--倒序4--" + strings.toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (strings.get(0).equals("0")) {
+                                            itemFragment2.getHorizontal_machine_btn().setBackgroundResource(R.drawable.btn_bg);
+                                            onHorizontal_machine_btnClicked = false;
+                                        } else {
+                                            itemFragment2.getHorizontal_machine_btn().setBackgroundResource(R.drawable.btn_click_down);
+                                            onHorizontal_machine_btnClicked = true;
+                                        }
+                                        if (strings.get(1).equals("0")) {
+                                            itemFragment2.getHorizontal_hot_btn().setBackgroundResource(R.drawable.btn_bg);
+                                            onHorizontal_hot_btnClicked = false;
+                                        } else {
+                                            itemFragment2.getHorizontal_hot_btn().setBackgroundResource(R.drawable.btn_click_down);
+                                            onHorizontal_hot_btnClicked = true;
+                                        }
+                                        if (strings.get(2).equals("0")) {
+                                            itemFragment2.getHorizontal_out_btn().setBackgroundResource(R.drawable.btn_bg);
+                                            onHorizontal_out_btnClicked = false;
+                                        } else {
+                                            itemFragment2.getHorizontal_out_btn().setBackgroundResource(R.drawable.btn_click_down);
+                                            onHorizontal_out_btnClicked = true;
+                                        }
+                                        if (strings.get(3).equals("0")) {
+                                            itemFragment2.getBelt_out().setBackgroundResource(R.drawable.btn_bg);
+                                            onBelt_outClick = false;
+                                        } else {
+                                            itemFragment2.getBelt_out().setBackgroundResource(R.drawable.btn_click_down);
+                                            onBelt_outClick = true;
+                                        }
+                                        sendCommand(m112s3);
+                                        isFifthCheckBtn = true;
+                                    }
+                                });
+                            }
+
+                            if (isFifthCheckBtn) {
+                                isFifthCheckBtn = false;
+                                String format = String.format("%8s", Integer.toBinaryString(bytes[3] & 0xFF)).replace(' ', '0');
+                                Log.i("wmk", "--读按钮format5--" + format);
+                                Log.i("wmk", "--读按钮5--" + Utils.bytesToHexString(bytes));
+                                final ArrayList<String> strings = new ArrayList<>();
+                                for (int i = 0; i < format.length(); i++) {
+                                    String substring = format.substring(i, i + 1);
+                                    strings.add(substring);
+                                }
+                                Collections.reverse(strings);
+                                Log.i("wmk", "--倒序5--" + strings.toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (strings.get(0).equals("0")) {
+                                            itemFragment2.getHandspike_out().setBackgroundResource(R.drawable.btn_bg);
+                                            onHandspike_outClicked = false;
+                                        } else {
+                                            itemFragment2.getHandspike_out().setBackgroundResource(R.drawable.btn_click_down);
+                                            onHandspike_outClicked = true;
+                                        }
+                                        if (strings.get(1).equals("0")) {
+                                            itemFragment2.getHandspike_in().setBackgroundResource(R.drawable.btn_bg);
+                                            onHandspike_inClicked = false;
+                                        } else {
+                                            itemFragment2.getHandspike_in().setBackgroundResource(R.drawable.btn_click_down);
+                                            onHandspike_inClicked = true;
+                                        }
+                                        if (strings.get(2).equals("0")) {
+                                            itemFragment2.getHot_out().setBackgroundResource(R.drawable.btn_bg);
+                                            onHot_outClick = false;
+                                        } else {
+                                            itemFragment2.getHot_out().setBackgroundResource(R.drawable.btn_click_down);
+                                            onHot_outClick = true;
+                                        }
+                                        if (strings.get(3).equals("0")) {
+                                            itemFragment2.getHot_in().setBackgroundResource(R.drawable.btn_bg);
+                                            onHot_inClicked = false;
+                                        } else {
+                                            itemFragment2.getHot_in().setBackgroundResource(R.drawable.btn_click_down);
+                                            onHot_inClicked = true;
+                                        }
+                                        if (strings.get(4).equals("0")) {
+                                            itemFragment2.getMachine_out().setBackgroundResource(R.drawable.btn_bg);
+                                            onMachine_outClicked = false;
+                                        } else {
+                                            itemFragment2.getMachine_out().setBackgroundResource(R.drawable.btn_click_down);
+                                            onMachine_outClicked = true;
+                                        }
+                                        if (strings.get(5).equals("0")) {
+                                            itemFragment2.getMachine_in().setBackgroundResource(R.drawable.btn_bg);
+                                            onMachine_inClicked = false;
+                                        } else {
+                                            itemFragment2.getMachine_in().setBackgroundResource(R.drawable.btn_click_down);
+                                            onMachine_inClicked = true;
+                                        }
+                                        if (strings.get(6).equals("0")) {
+                                            itemFragment3.getMachine_switch().setBackgroundResource(R.drawable.btn_bg);
+                                            onMachine_switchClicked = false;
+                                        } else {
+                                            itemFragment3.getMachine_switch().setBackgroundResource(R.drawable.btn_click_down);
+                                            onMachine_switchClicked = true;
+                                        }
+                                        if (strings.get(7).equals("0")) {
+                                            itemFragment3.getMachine_power().setBackgroundResource(R.drawable.btn_bg);
+                                            onMachine_powerClicked = false;
+                                        } else {
+                                            itemFragment3.getMachine_power().setBackgroundResource(R.drawable.btn_click_down);
+                                            onMachine_powerClicked = true;
+                                        }
+                                        sendCommand(m200s3);
+                                        isSixthCheckBtn = true;
+                                    }
+                                });
+                            }
+                            if (isSixthCheckBtn) {
+                                isSixthCheckBtn = false;
+                                String format = String.format("%2s", Integer.toBinaryString(bytes[3] & 0xFF)).replace(' ', '0');
+                                Log.i("wmk", "--读按钮format6--" + format);
+                                Log.i("wmk", "--读按钮6--" + Utils.bytesToHexString(bytes));
+                                final ArrayList<String> strings = new ArrayList<>();
+                                for (int i = 0; i < format.length(); i++) {
+                                    String substring = format.substring(i, i + 1);
+                                    strings.add(substring);
+                                }
+                                Collections.reverse(strings);
+                                Log.i("wmk", "--倒序6--" + strings.toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (strings.get(0).equals("0")) {
+                                            itemFragment2.getOut_in().setBackgroundResource(R.drawable.btn_bg);
+                                            onOut_inClick = false;
+                                        } else {
+                                            itemFragment2.getOut_in().setBackgroundResource(R.drawable.btn_click_down);
+                                            onOut_inClick = true;
+                                        }
+                                        if (strings.get(1).equals("0")) {
+                                            itemFragment2.getOut_out().setBackgroundResource(R.drawable.btn_bg);
+                                            onOut_outClicked = false;
+                                        } else {
+                                            itemFragment2.getOut_out().setBackgroundResource(R.drawable.btn_click_down);
+                                            onOut_outClicked = true;
+                                        }
+                                        sendCommand(m121s3);
+                                        isSeventhCheckBtn = true;
+                                    }
+                                });
+                            }
+
+                            if (isSeventhCheckBtn) {
+                                isSeventhCheckBtn = false;
+                                String format = String.format("%2s", Integer.toBinaryString(bytes[3] & 0xFF)).replace(' ', '0');
+                                Log.i("wmk", "--读按钮format7--" + format);
+                                Log.i("wmk", "--读按钮7--" + Utils.bytesToHexString(bytes));
+                                final ArrayList<String> strings = new ArrayList<>();
+                                for (int i = 0; i < format.length(); i++) {
+                                    String substring = format.substring(i, i + 1);
+                                    strings.add(substring);
+                                }
+                                Collections.reverse(strings);
+                                Log.i("wmk", "--倒序7--" + strings.toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (strings.get(0).equals("0")) {
+                                            itemFragment3.getHot().setBackgroundResource(R.drawable.btn_bg);
+                                            onHotClicked = false;
+                                        } else {
+                                            itemFragment3.getHot().setBackgroundResource(R.drawable.btn_click_down);
+                                            onHotClicked = true;
+                                        }
+                                        if (strings.get(1).equals("0")) {
+                                            itemFragment3.getFan().setBackgroundResource(R.drawable.btn_bg);
+                                            onFanClicked = false;
+                                        } else {
+                                            itemFragment3.getFan().setBackgroundResource(R.drawable.btn_click_down);
+                                            onFanClicked = true;
+                                        }
+                                        sendCommand(m10s3);
+                                        isEighthCheckBtn = true;
+                                    }
+                                });
+                            }
+
+                            if (isEighthCheckBtn) {
+                                isEighthCheckBtn = false;
+                                String format = String.format("%1s", Integer.toBinaryString(bytes[3] & 0xFF)).replace(' ', '0');
+                                Log.i("wmk", "--读按钮format8--" + format);
+                                Log.i("wmk", "--读按钮8--" + Utils.bytesToHexString(bytes));
+                                final ArrayList<String> strings = new ArrayList<>();
+                                for (int i = 0; i < format.length(); i++) {
+                                    String substring = format.substring(i, i + 1);
+                                    strings.add(substring);
+                                }
+                                Collections.reverse(strings);
+                                Log.i("wmk", "--倒序8--" + strings.toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (strings.get(0).equals("0")) {
+                                            itemFragment3.getMachine_reset().setBackgroundResource(R.drawable.btn_bg);
+                                            onMachine_resetClicked = false;
+                                        } else {
+                                            itemFragment3.getMachine_reset().setBackgroundResource(R.drawable.btn_click_down);
+                                            onMachine_resetClicked = true;
+                                        }
+                                        sendCommand(m130s3);
+                                        isNinthCheckBtn = true;
+                                    }
+                                });
+                            }
+                            if (isNinthCheckBtn) {
+                                String format = String.format("%1s", Integer.toBinaryString(bytes[3] & 0xFF)).replace(' ', '0');
+                                Log.i("wmk", "--读按钮format9--" + format);
+                                Log.i("wmk", "--读按钮9--" + Utils.bytesToHexString(bytes));
+                                final ArrayList<String> strings = new ArrayList<>();
+                                for (int i = 0; i < format.length(); i++) {
+                                    String substring = format.substring(i, i + 1);
+                                    strings.add(substring);
+                                }
+                                Collections.reverse(strings);
+                                Log.i("wmk", "--倒序9--" + strings.toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (strings.get(0).equals("0")) {
+                                            itemFragment3.getBtn_reset().setBackgroundResource(R.drawable.btn_bg);
+                                            onBtn_resetClicked = false;
+                                        } else {
+                                            itemFragment3.getBtn_reset().setBackgroundResource(R.drawable.btn_click_down);
+                                            onBtn_resetClicked = true;
+                                        }
                                     }
                                 });
                             }
@@ -1348,302 +2044,322 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         sendCommand(m130s2);
                                         Log.i("wmk", "读M130");
                                         break;
-                                }
-                            }
-
-
-                            if (bytes[0] == (byte) 0x01 && bytes[1] == (byte) 0x01 && bytes[2] == (byte) 0x01
-                                    && bytes[3] == (byte) 0x00) {
-                                Log.i("wmk", "--读线圈处理00--" + Utils.bytesToHexString(bytes));
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        switch (BtnTag) {
-                                            case "M122":
-                                                itemFragment3.getFan().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--烤箱风扇结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M10":
-                                                itemFragment3.getMachine_reset().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--机械复位结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M130":
-                                                itemFragment3.getBtn_reset().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--按钮复位结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M121":
-                                                itemFragment3.getHot().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--烤箱发热丝结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M118":
-                                                itemFragment3.getMachine_switch().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--打印机开关结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M119":
-                                                itemFragment3.getMachine_power().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--打印机电源结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M100":
-                                                verticalBtn.setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--上下回原点结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M101":
-                                                horizontalBtn.setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--横向回原点结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M110":
-                                                itemFragment2.getHorizontal_out_btn().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--横向出口结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M109":
-                                                itemFragment2.getHorizontal_hot_btn().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--横向烤箱结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M108":
-                                                itemFragment2.getHorizontal_machine_btn().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--横向打印机结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M106":
-                                                itemFragment2.getVertical_get_btn().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--上下取料结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M105":
-                                                itemFragment2.getVertical_out_btn().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--上下出口位结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M104":
-                                                itemFragment2.getVertical_hot_btn().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--上下烤箱位结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M103":
-                                                itemFragment2.getVertical_machine_btn().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--上下打印机位结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M102":
-                                                itemFragment2.getVertical_rotation_btn().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--上下旋转位结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M111":
-                                                itemFragment2.getBelt_out().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--皮带出货结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M201":
-                                                itemFragment2.getOut_out().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--出货口开结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M200":
-                                                itemFragment2.getOut_in().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--出货口关结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M112":
-                                                itemFragment2.getHandspike_out().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--推杆伸出结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M113":
-                                                itemFragment2.getHandspike_in().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--推杆缩回结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M114":
-                                                itemFragment2.getHot_out().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--烤箱伸出结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M115":
-                                                itemFragment2.getHot_in().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--烤箱缩回结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M116":
-                                                itemFragment2.getMachine_out().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--打印机伸出结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M117":
-                                                itemFragment2.getMachine_in().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--打印机缩回结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M107":
-                                                itemFragment2.getHorizontal_entrepot_btn().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--横向料仓位结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M50":
-                                                itemFragment1.getUp().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--上移结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M51":
-                                                itemFragment1.getDown().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--下移结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M52":
-                                                itemFragment1.getForward().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--前进结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M53":
-                                                itemFragment1.getBack().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--后退结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M54":
-                                                itemFragment1.getRotation1().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--出口面结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M55":
-                                                itemFragment1.getRotation2().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--打印机面结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M56":
-                                                itemFragment1.getOpen().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--张开结束--" + Utils.bytesToHexString(bytes));
-                                                break;
-                                            case "M57":
-                                                itemFragment1.getClose().setBackgroundResource(R.drawable.btn_bg);
-                                                Log.i("wmk", "--夹紧结束--" + Utils.bytesToHexString(bytes));
-                                                break;
+                                    case "M58":
+                                        if (m58s2 == null) {
+                                            m58s2 = Utils.getCommandBytes("M58", readPreByte, readBackByte);
                                         }
-                                    }
-                                });
-
-                            }
-
-                            if (bytes[0] == (byte) 0x01 && bytes[1] == (byte) 0x01 && bytes[2] == (byte) 0x01
-                                    && bytes[3] == (byte) 0x01) {
-                                Log.i("wmk", "--读线圈处理01--" + Utils.bytesToHexString(bytes));
-                                switch (BtnTag) {
-                                    case "M122":
-                                        sendCommand(m122s2);
-                                        Log.i("wmk", "--继续读烤箱风扇--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M10":
-                                        sendCommand(m10s2);
-                                        Log.i("wmk", "--继续读机械复位--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M130":
-                                        sendCommand(m130s2);
-                                        Log.i("wmk", "--继续读按钮复位--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M121":
-                                        sendCommand(m121s2);
-                                        Log.i("wmk", "--继续读烤箱发热丝--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M118":
-                                        sendCommand(m118s2);
-                                        Log.i("wmk", "--继续读打印机开关--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M119":
-                                        sendCommand(m119s2);
-                                        Log.i("wmk", "--继续读打印机电源--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M100":
-                                        sendCommand(m100s2);
-                                        Log.i("wmk", "--继续读上下回原点--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M101":
-                                        sendCommand(m101s2);
-                                        Log.i("wmk", "--继续读横向回原点--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M110":
-                                        sendCommand(m110s2);
-                                        Log.i("wmk", "--继续读横向出口位--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M109":
-                                        sendCommand(m109s2);
-                                        Log.i("wmk", "--继续读横向烤箱位--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M108":
-                                        sendCommand(m108s2);
-                                        Log.i("wmk", "--继续读横向打印位--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M106":
-                                        sendCommand(m106s2);
-                                        Log.i("wmk", "--继续读上下取料位--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M105":
-                                        sendCommand(m105s2);
-                                        Log.i("wmk", "--继续读上下出口位--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M104":
-                                        sendCommand(m104s2);
-                                        Log.i("wmk", "--继续读上下烤箱位--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M103":
-                                        sendCommand(m103s2);
-                                        Log.i("wmk", "--继续读上下打印机位--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M102":
-                                        sendCommand(m102s2);
-                                        Log.i("wmk", "--继续读上下旋转位--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M111":
-                                        sendCommand(m111s2);
-                                        Log.i("wmk", "--继续读皮带出货--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M201":
-                                        sendCommand(m201s2);
-                                        Log.i("wmk", "--继续读出货口开--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M200":
-                                        sendCommand(m200s2);
-                                        Log.i("wmk", "--继续读出货口关--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M112":
-                                        sendCommand(m112s2);
-                                        Log.i("wmk", "--继续读推杆伸出--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M113":
-                                        sendCommand(m113s2);
-                                        Log.i("wmk", "--继续读推杆缩回--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M114":
-                                        sendCommand(m114s2);
-                                        Log.i("wmk", "--继续读烤箱伸出--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M115":
-                                        sendCommand(m115s2);
-                                        Log.i("wmk", "--继续读烤箱缩回--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M116":
-                                        sendCommand(m116s2);
-                                        Log.i("wmk", "--继续读打印机伸出--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M117":
-                                        sendCommand(m117s2);
-                                        Log.i("wmk", "--继续读打印机缩回--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M107":
-                                        sendCommand(m107s2);
-                                        Log.i("wmk", "--继续读横向料仓位--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M50":
-                                        sendCommand(m50s2);
-                                        Log.i("wmk", "--继续读上移--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M51":
-                                        sendCommand(m51s2);
-                                        Log.i("wmk", "--继续读下移--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M52":
-                                        sendCommand(m52s2);
-                                        Log.i("wmk", "--继续读前进--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M53":
-                                        sendCommand(m53s2);
-                                        Log.i("wmk", "--继续读后退--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M54":
-                                        sendCommand(m54s2);
-                                        //   commandBytes = m54s2;
-                                        Log.i("wmk", "--继续读出口面--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M55":
-                                        sendCommand(m55s2);
-
-                                        Log.i("wmk", "--继续读打印机面--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M56":
-                                        sendCommand(m56s2);
-                                        Log.i("wmk", "--继续读张开--" + Utils.bytesToHexString(bytes));
-                                        break;
-                                    case "M57":
-                                        sendCommand(m57s2);
-                                        Log.i("wmk", "--继续读夹紧--" + Utils.bytesToHexString(bytes));
+                                        sendCommand(m58s2);
+                                        Log.i("wmk", "读M58");
                                         break;
                                 }
+                            }
+
+                            if (!isFirstCheckBtn && !isSecondCheckBtn && !isThirdCheckBtn && !isForthCheckBtn &&
+                                    !isFifthCheckBtn && !isSixthCheckBtn &&
+                                    !isSeventhCheckBtn && !isEighthCheckBtn && !isNinthCheckBtn) {//不是第一次检查按钮的
+                                if (BtnTag == null) continue;
+                                if (bytes[0] == (byte) 0x01 && bytes[1] == (byte) 0x01 && bytes[2] == (byte) 0x01
+                                        && bytes[3] == (byte) 0x00) {
+                                    Log.i("wmk", "--读线圈处理00--" + Utils.bytesToHexString(bytes));
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            switch (BtnTag) {
+                                                case "M58":
+                                                    itemFragment2.getDown_pulse_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--下放脉冲量结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M122":
+                                                    itemFragment3.getFan().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--烤箱风扇结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M10":
+                                                    itemFragment3.getMachine_reset().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--机械复位结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M130":
+                                                    itemFragment3.getBtn_reset().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--按钮复位结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M121":
+                                                    itemFragment3.getHot().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--烤箱发热丝结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M118":
+                                                    itemFragment3.getMachine_switch().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--打印机开关结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M119":
+                                                    itemFragment3.getMachine_power().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--打印机电源结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M100":
+                                                    verticalBtn.setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--上下回原点结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M101":
+                                                    horizontalBtn.setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--横向回原点结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M110":
+                                                    itemFragment2.getHorizontal_out_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--横向出口结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M109":
+                                                    itemFragment2.getHorizontal_hot_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--横向烤箱结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M108":
+                                                    itemFragment2.getHorizontal_machine_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--横向打印机结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M106":
+                                                    itemFragment2.getVertical_get_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--上下取料结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M105":
+                                                    itemFragment2.getVertical_out_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--上下出口位结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M104":
+                                                    itemFragment2.getVertical_hot_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--上下烤箱位结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M103":
+                                                    itemFragment2.getVertical_machine_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--上下打印机位结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M102":
+                                                    itemFragment2.getVertical_rotation_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--上下旋转位结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M111":
+                                                    itemFragment2.getBelt_out().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--皮带出货结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M201":
+                                                    itemFragment2.getOut_out().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--出货口开结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M200":
+                                                    itemFragment2.getOut_in().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--出货口关结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M112":
+                                                    itemFragment2.getHandspike_out().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--推杆伸出结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M113":
+                                                    itemFragment2.getHandspike_in().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--推杆缩回结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M114":
+                                                    itemFragment2.getHot_out().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--烤箱伸出结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M115":
+                                                    itemFragment2.getHot_in().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--烤箱缩回结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M116":
+                                                    itemFragment2.getMachine_out().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--打印机伸出结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M117":
+                                                    itemFragment2.getMachine_in().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--打印机缩回结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M107":
+                                                    itemFragment2.getHorizontal_entrepot_btn().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--横向料仓位结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M50":
+                                                    itemFragment1.getUp().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--上移结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M51":
+                                                    itemFragment1.getDown().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--下移结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M52":
+                                                    itemFragment1.getForward().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--前进结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M53":
+                                                    itemFragment1.getBack().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--后退结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M54":
+                                                    itemFragment1.getRotation1().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--出口面结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M55":
+                                                    itemFragment1.getRotation2().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--打印机面结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M56":
+                                                    itemFragment1.getOpen().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--张开结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                                case "M57":
+                                                    itemFragment1.getClose().setBackgroundResource(R.drawable.btn_bg);
+                                                    Log.i("wmk", "--夹紧结束--" + Utils.bytesToHexString(bytes));
+                                                    break;
+                                            }
+                                        }
+                                    });
+
+                                }
+
+                                if (bytes[0] == (byte) 0x01 && bytes[1] == (byte) 0x01 && bytes[2] == (byte) 0x01
+                                        && bytes[3] == (byte) 0x01) {
+                                    Log.i("wmk", "--读线圈处理01--" + Utils.bytesToHexString(bytes));
+                                    switch (BtnTag) {
+                                        case "M58":
+                                            sendCommand(m58s2);
+                                            Log.i("wmk", "--继续下放脉冲量--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M122":
+                                            sendCommand(m122s2);
+                                            Log.i("wmk", "--继续读烤箱风扇--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M10":
+                                            sendCommand(m10s2);
+                                            Log.i("wmk", "--继续读机械复位--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M130":
+                                            sendCommand(m130s2);
+                                            Log.i("wmk", "--继续读按钮复位--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M121":
+                                            sendCommand(m121s2);
+                                            Log.i("wmk", "--继续读烤箱发热丝--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M118":
+                                            sendCommand(m118s2);
+                                            Log.i("wmk", "--继续读打印机开关--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M119":
+                                            sendCommand(m119s2);
+                                            Log.i("wmk", "--继续读打印机电源--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M100":
+                                            sendCommand(m100s2);
+                                            Log.i("wmk", "--继续读上下回原点--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M101":
+                                            sendCommand(m101s2);
+                                            Log.i("wmk", "--继续读横向回原点--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M110":
+                                            sendCommand(m110s2);
+                                            Log.i("wmk", "--继续读横向出口位--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M109":
+                                            sendCommand(m109s2);
+                                            Log.i("wmk", "--继续读横向烤箱位--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M108":
+                                            sendCommand(m108s2);
+                                            Log.i("wmk", "--继续读横向打印位--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M106":
+                                            sendCommand(m106s2);
+                                            Log.i("wmk", "--继续读上下取料位--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M105":
+                                            sendCommand(m105s2);
+                                            Log.i("wmk", "--继续读上下出口位--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M104":
+                                            sendCommand(m104s2);
+                                            Log.i("wmk", "--继续读上下烤箱位--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M103":
+                                            sendCommand(m103s2);
+                                            Log.i("wmk", "--继续读上下打印机位--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M102":
+                                            sendCommand(m102s2);
+                                            Log.i("wmk", "--继续读上下旋转位--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M111":
+                                            sendCommand(m111s2);
+                                            Log.i("wmk", "--继续读皮带出货--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M201":
+                                            sendCommand(m201s2);
+                                            Log.i("wmk", "--继续读出货口开--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M200":
+                                            sendCommand(m200s2);
+                                            Log.i("wmk", "--继续读出货口关--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M112":
+                                            sendCommand(m112s2);
+                                            Log.i("wmk", "--继续读推杆伸出--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M113":
+                                            sendCommand(m113s2);
+                                            Log.i("wmk", "--继续读推杆缩回--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M114":
+                                            sendCommand(m114s2);
+                                            Log.i("wmk", "--继续读烤箱伸出--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M115":
+                                            sendCommand(m115s2);
+                                            Log.i("wmk", "--继续读烤箱缩回--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M116":
+                                            sendCommand(m116s2);
+                                            Log.i("wmk", "--继续读打印机伸出--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M117":
+                                            sendCommand(m117s2);
+                                            Log.i("wmk", "--继续读打印机缩回--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M107":
+                                            sendCommand(m107s2);
+                                            Log.i("wmk", "--继续读横向料仓位--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M50":
+                                            sendCommand(m50s2);
+                                            Log.i("wmk", "--继续读上移--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M51":
+                                            sendCommand(m51s2);
+                                            Log.i("wmk", "--继续读下移--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M52":
+                                            sendCommand(m52s2);
+                                            Log.i("wmk", "--继续读前进--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M53":
+                                            sendCommand(m53s2);
+                                            Log.i("wmk", "--继续读后退--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M54":
+                                            sendCommand(m54s2);
+                                            //   commandBytes = m54s2;
+                                            Log.i("wmk", "--继续读出口面--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M55":
+                                            sendCommand(m55s2);
+
+                                            Log.i("wmk", "--继续读打印机面--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M56":
+                                            sendCommand(m56s2);
+                                            Log.i("wmk", "--继续读张开--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                        case "M57":
+                                            sendCommand(m57s2);
+                                            Log.i("wmk", "--继续读夹紧--" + Utils.bytesToHexString(bytes));
+                                            break;
+                                    }
+                                }
+
                             }
 
 

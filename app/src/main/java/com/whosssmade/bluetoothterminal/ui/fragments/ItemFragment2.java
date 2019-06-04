@@ -40,6 +40,46 @@ public class ItemFragment2 extends BaseFragment<ItemPresenter2> implements ItemC
     @BindView(R.id.down_pulse)
     TextView down_pulse;
 
+    public TextView getVertical_rotation() {
+        return vertical_rotation;
+    }
+
+    public TextView getVertical_machine() {
+        return vertical_machine;
+    }
+
+    public TextView getVertical_hot() {
+        return vertical_hot;
+    }
+
+    public TextView getVertical_out() {
+        return vertical_out;
+    }
+
+    public TextView getVertical_get() {
+        return vertical_get;
+    }
+
+    public TextView getHorizontal_entrepot() {
+        return horizontal_entrepot;
+    }
+
+    public TextView getHorizontal_machine() {
+        return horizontal_machine;
+    }
+
+    public TextView getHorizontal_hot() {
+        return horizontal_hot;
+    }
+
+    public TextView getHorizontal_out() {
+        return horizontal_out;
+    }
+
+    public TextView getDown_pulse() {
+        return down_pulse;
+    }
+
     @BindView(R.id.vertical_rotation_btn)
     TextView vertical_rotation_btn;
     @BindView(R.id.vertical_machine_btn)
@@ -287,7 +327,7 @@ public class ItemFragment2 extends BaseFragment<ItemPresenter2> implements ItemC
             case R.id.horizontal_out:
                 dialogSetTextView(horizontal_out);
                 break;
-            case R.id.down_pulse_btn://下放脉冲位    无数据
+            case R.id.down_pulse_btn://下放脉冲位    M58
                 onFragment2BtnClick.onDown_pulse_btnClick();
                 break;
             case R.id.down_pulse:

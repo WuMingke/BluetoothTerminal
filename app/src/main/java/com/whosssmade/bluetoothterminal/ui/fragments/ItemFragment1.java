@@ -60,6 +60,50 @@ public class ItemFragment1 extends BaseFragment<ItemPresenter1> implements ItemC
     @BindView(R.id.entrepot3_pulse)
     TextView entrepot3_pulse;
 
+    public TextView getEntrepot0_pulse() {
+        return entrepot0_pulse;
+    }
+
+    public TextView getEntrepot1_pulse() {
+        return entrepot1_pulse;
+    }
+
+    public TextView getEntrepot2_pulse() {
+        return entrepot2_pulse;
+    }
+
+    public TextView getEntrepot3_pulse() {
+        return entrepot3_pulse;
+    }
+
+    public TextView getEntrepot0_quantity() {
+        return entrepot0_quantity;
+    }
+
+    public TextView getEntrepot1_quantity() {
+        return entrepot1_quantity;
+    }
+
+    public TextView getEntrepot2_quantity() {
+        return entrepot2_quantity;
+    }
+
+    public TextView getEntrepot3_quantity() {
+        return entrepot3_quantity;
+    }
+
+    public TextView getEntrepot() {
+        return entrepot;
+    }
+
+    public TextView getBottom_pulse() {
+        return bottom_pulse;
+    }
+
+    public TextView getThickness_pulse() {
+        return thickness_pulse;
+    }
+
     @BindView(R.id.entrepot0_quantity)
     TextView entrepot0_quantity;
     @BindView(R.id.entrepot1_quantity)
@@ -136,6 +180,37 @@ public class ItemFragment1 extends BaseFragment<ItemPresenter1> implements ItemC
 
     private SetValueDialog setValueDialog;
 
+    public TextView getPulse1() {
+        return pulse1;
+    }
+
+    public TextView getFrequency1() {
+        return frequency1;
+    }
+
+    public TextView getPulse2() {
+        return pulse2;
+    }
+
+    public TextView getFrequency2() {
+        return frequency2;
+    }
+
+    public TextView getPulse3() {
+        return pulse3;
+    }
+
+    public TextView getFrequency3() {
+        return frequency3;
+    }
+
+    public TextView getPulse4() {
+        return pulse4;
+    }
+
+    public TextView getFrequency4() {
+        return frequency4;
+    }
 
     @Override
     protected void initInject() {
