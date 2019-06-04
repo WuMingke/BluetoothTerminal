@@ -145,12 +145,12 @@ public class Utils {
         crcByte[0] = (byte) (value & 0xff);
         crcByte[1] = (byte) ((value >> 8) & 0xff);
 
-       // Log.i("wmk", "初始值：---" + Arrays.toString(crcByte));
+        // Log.i("wmk", "初始值：---" + Arrays.toString(crcByte));
 
         return concatAll(data, crcByte);
     }
 
-    public static byte[] crcByte(byte[] data){
+    public static byte[] crcByte(byte[] data) {
         int value = calcCrc16(data, 0, data.length);
 
         byte[] crcByte = new byte[2];
@@ -164,6 +164,13 @@ public class Utils {
         value = (((src[0] & 0xFF) << 8)
                 | ((src[1] & 0xFF)));
         return value;
+    }
+
+    public static byte[] intToBytes(int value) {
+        byte[] src = new byte[2];
+        src[0] = (byte) ((value >> 8) & 0xFF);
+        src[1] = (byte) (value & 0xFF);
+        return src;
     }
 
 

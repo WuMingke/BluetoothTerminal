@@ -93,6 +93,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4000"
                 tools:text="4000" />
 
             <TextView
@@ -101,6 +102,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4002"
                 tools:text="4000" />
         </LinearLayout>
 
@@ -149,6 +151,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4004"
                 tools:text="4000" />
 
             <TextView
@@ -157,6 +160,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4006"
                 tools:text="4000" />
         </LinearLayout>
 
@@ -205,6 +209,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4008"
                 tools:text="4000" />
 
             <TextView
@@ -213,6 +218,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4010"
                 tools:text="4000" />
         </LinearLayout>
 
@@ -261,6 +267,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4012"
                 tools:text="4000" />
 
             <TextView
@@ -269,6 +276,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4014"
                 tools:text="4000" />
         </LinearLayout>
 
@@ -345,6 +353,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4020"
                 tools:text="4000" />
 
             <TextView
@@ -353,6 +362,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4022"
                 tools:text="4000" />
 
             <TextView
@@ -361,6 +371,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4024"
                 tools:text="4000" />
 
             <TextView
@@ -369,6 +380,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4026"
                 tools:text="4000" />
         </LinearLayout>
 
@@ -393,6 +405,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4210"
                 tools:text="4000" />
 
             <TextView
@@ -401,6 +414,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4211"
                 tools:text="4000" />
 
             <TextView
@@ -409,6 +423,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4212"
                 tools:text="4000" />
 
             <TextView
@@ -417,6 +432,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4213"
                 tools:text="4000" />
         </LinearLayout>
 
@@ -441,7 +457,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center" />
+                android:gravity="center"
+                android:tag="D4200" />
 
             <View
                 android:layout_width="0dp"
@@ -482,6 +499,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4205"
                 tools:text="4000" />
 
             <View
@@ -523,6 +541,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:tag="D4202"
                 tools:text="4000" />
 
             <View

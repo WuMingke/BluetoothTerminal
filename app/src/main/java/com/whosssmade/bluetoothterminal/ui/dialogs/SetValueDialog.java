@@ -17,6 +17,9 @@ import com.whosssmade.bluetoothterminal.model.constant.EventBusMessage;
 
 import org.simple.eventbus.EventBus;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -47,6 +50,8 @@ public class SetValueDialog extends Dialog {
         editText.requestFocus();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
+        EventBus.getDefault().register(this);
+
     }
 
     @Override
@@ -64,6 +69,12 @@ public class SetValueDialog extends Dialog {
             case R.id.sure:
                 String value = editText.getText().toString();
                 mTextView.setText(value);
+                String tag = (String) mTextView.getTag();
+                EventBusMessage<Map<String, String>> message = new EventBusMessage<>();
+                Map<String, String> stringMap = new HashMap<>();
+                stringMap.put(tag, value);
+                message.setT(stringMap);
+                EventBus.getDefault().post(message, Constants.NEW_VALUE);
                 dismiss();
                 break;
         }
@@ -72,6 +83,7 @@ public class SetValueDialog extends Dialog {
     @Override
     public void dismiss() {
         super.dismiss();
-     //   bind.unbind();
+        //   bind.unbind();
+        EventBus.getDefault().unregister(this);
     }
 }

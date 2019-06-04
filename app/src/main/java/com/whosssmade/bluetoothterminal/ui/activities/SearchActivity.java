@@ -160,6 +160,6 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(bluetoothDiscovery);
+       // unregisterReceiver(bluetoothDiscovery);
     }
 }
