@@ -110,7 +110,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private static final byte[] readRegisterBackByte5 = new byte[]{0x00, 0x04};//第二部分4个
     private static final byte[] readRegisterBackByte6 = new byte[]{0x00, 0x08};//第二部分4个 ??
 
-    private static final byte[] writeRegisterPreByte = new byte[]{0x01, 0x06};
+    private static final byte[] writeRegisterPreByte = new byte[]{0x01, 0x10};//写多个寄存器
+    private static final byte[] writeRegisterPreByte2 = new byte[]{0x00, 0x02, 0x04};//写2个寄存器
+
+    private static final byte[] writeRegisterBackByte = new byte[]{(byte) 0xFF, (byte) 0xFF};
+    private static final byte[] writeRegisterBackByte2 = new byte[]{0x00, 0x00};
 
     private ItemFragmentPagerAdapter pagerAdapter;
 
@@ -282,19 +286,19 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void onUpClick() {
         if (!onUpClicked) {
             if (m50s == null) {
-                m50s = Utils.getCommandBytes("M50", writePreByte, writeBackByte);
+                m50s = Utils.getCommandBytes("M51", writePreByte, writeBackByte);
             }
             sendCommand(m50s);
             onUpClicked = true;
-            itemFragment1.getUp().setBackgroundResource(R.drawable.btn_click_down);
-            BtnTag = "M50";
+          //  itemFragment1.getUp().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M51";
         } else {
             if (m50s1 == null) {
-                m50s1 = Utils.getCommandBytes("M50", writePreByte, writeBackByte2);
+                m50s1 = Utils.getCommandBytes("M51", writePreByte, writeBackByte2);
             }
             sendCommand(m50s1);
             onUpClicked = false;
-            itemFragment1.getUp().setBackgroundResource(R.drawable.btn_bg);
+          //  itemFragment1.getUp().setBackgroundResource(R.drawable.btn_bg);
         }
 
     }
@@ -303,19 +307,19 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void onDownClick() {
         if (!onDownClicked) {
             if (m51s == null) {
-                m51s = Utils.getCommandBytes("M51", writePreByte, writeBackByte);
+                m51s = Utils.getCommandBytes("M50", writePreByte, writeBackByte);
             }
             sendCommand(m51s);
             onDownClicked = true;
-            itemFragment1.getDown().setBackgroundResource(R.drawable.btn_click_down);
-            BtnTag = "M51";
+           // itemFragment1.getDown().setBackgroundResource(R.drawable.btn_click_down);
+            BtnTag = "M50";
         } else {
             if (m51s1 == null) {
-                m51s1 = Utils.getCommandBytes("M51", writePreByte, writeBackByte2);
+                m51s1 = Utils.getCommandBytes("M50", writePreByte, writeBackByte2);
             }
             sendCommand(m51s1);
             onDownClicked = false;
-            itemFragment1.getDown().setBackgroundResource(R.drawable.btn_bg);
+           // itemFragment1.getDown().setBackgroundResource(R.drawable.btn_bg);
         }
 
     }
@@ -330,7 +334,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
             sendCommand(m52s);
             onForwardClicked = true;
-            itemFragment1.getForward().setBackgroundResource(R.drawable.btn_click_down);
+          //  itemFragment1.getForward().setBackgroundResource(R.drawable.btn_click_down);
             BtnTag = "M52";
         } else {
             if (m52s1 == null) {
@@ -338,7 +342,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
             sendCommand(m52s1);
             onForwardClicked = false;
-            itemFragment1.getForward().setBackgroundResource(R.drawable.btn_bg);
+          //  itemFragment1.getForward().setBackgroundResource(R.drawable.btn_bg);
         }
 
 
@@ -353,7 +357,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
             sendCommand(m53s);
             onBackClicked = true;
-            itemFragment1.getBack().setBackgroundResource(R.drawable.btn_click_down);
+        //    itemFragment1.getBack().setBackgroundResource(R.drawable.btn_click_down);
             BtnTag = "M53";
         } else {
             if (m53s1 == null) {
@@ -361,7 +365,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
             sendCommand(m53s1);
             onBackClicked = false;
-            itemFragment1.getBack().setBackgroundResource(R.drawable.btn_bg);
+          //  itemFragment1.getBack().setBackgroundResource(R.drawable.btn_bg);
         }
 
 
@@ -1140,7 +1144,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                         while (true) {
 
                             final byte[] bytes = Utils.readInputStream(mInputStream);
-                            Log.i("wmk", "-------------------------------------readInputStream-----" + Utils.bytesToHexString(bytes));
                             //if (checkData(bytes)) return;
                             if (bytes.length < 2) {
                                 continue;
@@ -1155,10 +1158,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                             if (!Arrays.toString(Utils.crcByte(bytes1))
                                     .equals(Arrays.toString(crcByte))) {
                                 sendCommand(commandBytes);//数据不对，重新请求
-                                // continue;
+                                continue;
                                 // return true;
                             }
-
+                            Log.i("wmk", "-------------------------------------readInputStream-----" + Utils.bytesToHexString(bytes));
                             //计算数据  1176  67296-66976
 
                             if (bytes[1] == (byte) 0x03 && isReadD5002) {
@@ -1173,10 +1176,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         itemByte[j] = dataByte[4 * i + j];
                                     }
                                     if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
-                                        readData = 65536 - Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]});
+                                        readData = 65536 - Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]});
                                     } else {
-                                        readData = Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]}) +
-                                                Utils.bytesToInt(new byte[]{itemByte[2], itemByte[3]});
+
+                                        byte[] bytes2 = Utils.concatAll(new byte[]{itemByte[2], itemByte[3]}, new byte[]{itemByte[0], itemByte[1]});
+                                        readData = Utils.bytesToInt2(bytes2);
                                     }
                                     finalData.add(readData);
                                 }
@@ -1207,10 +1211,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         itemByte[j] = dataByte[4 * i + j];
                                     }
                                     if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
-                                        readData = 65536 - Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]});
+                                        readData = 65536 - Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]});
                                     } else {
-                                        readData = Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]}) +
-                                                Utils.bytesToInt(new byte[]{itemByte[2], itemByte[3]});
+                                        byte[] bytes2 = Utils.concatAll(new byte[]{itemByte[2], itemByte[3]}, new byte[]{itemByte[0], itemByte[1]});
+                                        readData = Utils.bytesToInt2(bytes2);
                                     }
                                     finalData.add(readData);
                                 }
@@ -1246,10 +1250,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         itemByte[j] = dataByte[4 * i + j];
                                     }
                                     if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
-                                        readData = 65536 - Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]});
+                                        readData = 65536 - Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]});
                                     } else {
-                                        readData = Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]}) +
-                                                Utils.bytesToInt(new byte[]{itemByte[2], itemByte[3]});
+                                        byte[] bytes2 = Utils.concatAll(new byte[]{itemByte[2], itemByte[3]}, new byte[]{itemByte[0], itemByte[1]});
+                                        readData = Utils.bytesToInt2(bytes2);
                                     }
                                     finalData.add(readData);
                                 }
@@ -1287,10 +1291,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         itemByte[j] = dataByte[4 * i + j];
                                     }
                                     if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
-                                        readData = 65536 - Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]});
+                                        readData = 65536 - Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]});
                                     } else {
-                                        readData = Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]}) +
-                                                Utils.bytesToInt(new byte[]{itemByte[2], itemByte[3]});
+                                        byte[] bytes2 = Utils.concatAll(new byte[]{itemByte[2], itemByte[3]}, new byte[]{itemByte[0], itemByte[1]});
+                                        readData = Utils.bytesToInt2(bytes2);
                                     }
                                     finalData.add(readData);
                                 }
@@ -1322,7 +1326,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                     for (int j = 0; j < 2; j++) {
                                         itemByte[j] = dataByte[2 * i + j];
                                     }
-                                    int i1 = Utils.bytesToInt(new byte[]{itemByte[0], itemByte[1]});
+                                    int i1 = Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]});
                                     finalData.add(i1);
                                 }
                                 runOnUiThread(new Runnable() {
@@ -1348,21 +1352,22 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                 for (int i = 0; i < dataByte.length; i++) {
                                     dataByte[i] = bytes[i + 3];
                                 }
-                                finalData.add(Utils.bytesToInt(new byte[]{dataByte[0], dataByte[1]}));
+                                finalData.add(Utils.bytesToInt1(new byte[]{dataByte[0], dataByte[1]}));
 
-                                if (dataByte[6] == (byte) 0xff && dataByte[6] == (byte) 0xff) {
-                                    finalData.add(Utils.bytesToInt(new byte[]{dataByte[6], dataByte[7]}) -
-                                            Utils.bytesToInt(new byte[]{dataByte[4], dataByte[5]}));
+                                if (dataByte[6] == (byte) 0xff && dataByte[7] == (byte) 0xff) {
+
+                                    finalData.add(65536 -
+                                            Utils.bytesToInt1(new byte[]{dataByte[4], dataByte[5]}));
                                 } else {
-                                    finalData.add(Utils.bytesToInt(new byte[]{dataByte[4], dataByte[5]}) +
-                                            Utils.bytesToInt(new byte[]{dataByte[6], dataByte[7]}));
+                                    byte[] bytes2 = Utils.concatAll(new byte[]{dataByte[6], dataByte[7]}, new byte[]{dataByte[4], dataByte[5]});
+                                    finalData.add(Utils.bytesToInt2(bytes2));
                                 }
                                 if (dataByte[12] == (byte) 0xff && dataByte[13] == (byte) 0xff) {
-                                    finalData.add(Utils.bytesToInt(new byte[]{dataByte[12], dataByte[13]}) -
-                                            Utils.bytesToInt(new byte[]{dataByte[10], dataByte[11]}));
+                                    finalData.add(65536 -
+                                            Utils.bytesToInt1(new byte[]{dataByte[10], dataByte[11]}));
                                 } else {
-                                    finalData.add(Utils.bytesToInt(new byte[]{dataByte[10], dataByte[11]}) +
-                                            Utils.bytesToInt(new byte[]{dataByte[12], dataByte[13]}));
+                                    byte[] bytes2 = Utils.concatAll(new byte[]{dataByte[12], dataByte[13]}, new byte[]{dataByte[10], dataByte[11]});
+                                    finalData.add(Utils.bytesToInt2(bytes2));
                                 }
 
 
@@ -1813,7 +1818,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                             if (bytes[1] == (byte) 0x05) {//对方收到写线圈，然后我要去读
                                 if (BtnTag == null) continue;
                                 switch (BtnTag) {
-                                    case "M50":
+                                   /* case "M50":
                                         if (m50s2 == null) {
                                             m50s2 = Utils.getCommandBytes("M50", readPreByte, readBackByte);
                                         }
@@ -1840,7 +1845,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         }
                                         sendCommand(m53s2);
                                         Log.i("wmk", "读M53");
-                                        break;
+                                        break;*/
                                     case "M54":
                                         if (m54s2 == null) {
                                             m54s2 = Utils.getCommandBytes("M54", readPreByte, readBackByte);
@@ -2181,7 +2186,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                                     itemFragment2.getHorizontal_entrepot_btn().setBackgroundResource(R.drawable.btn_bg);
                                                     Log.i("wmk", "--横向料仓位结束--" + Utils.bytesToHexString(bytes));
                                                     break;
-                                                case "M50":
+                                               /* case "M50":
                                                     itemFragment1.getUp().setBackgroundResource(R.drawable.btn_bg);
                                                     Log.i("wmk", "--上移结束--" + Utils.bytesToHexString(bytes));
                                                     break;
@@ -2196,7 +2201,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                                 case "M53":
                                                     itemFragment1.getBack().setBackgroundResource(R.drawable.btn_bg);
                                                     Log.i("wmk", "--后退结束--" + Utils.bytesToHexString(bytes));
-                                                    break;
+                                                    break;*/
                                                 case "M54":
                                                     itemFragment1.getRotation1().setBackgroundResource(R.drawable.btn_bg);
                                                     Log.i("wmk", "--出口面结束--" + Utils.bytesToHexString(bytes));
@@ -2332,7 +2337,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                             sendCommand(m107s2);
                                             Log.i("wmk", "--继续读横向料仓位--" + Utils.bytesToHexString(bytes));
                                             break;
-                                        case "M50":
+                                       /* case "M50":
                                             sendCommand(m50s2);
                                             Log.i("wmk", "--继续读上移--" + Utils.bytesToHexString(bytes));
                                             break;
@@ -2347,7 +2352,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         case "M53":
                                             sendCommand(m53s2);
                                             Log.i("wmk", "--继续读后退--" + Utils.bytesToHexString(bytes));
-                                            break;
+                                            break;*/
                                         case "M54":
                                             sendCommand(m54s2);
                                             //   commandBytes = m54s2;
@@ -2533,93 +2538,40 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     @Subscriber(tag = Constants.NEW_VALUE)
-    public void setNewValue(EventBusMessage<Map<String, String>> message) {
+    public void setNewValue(EventBusMessage<List<String>> message) {
         if (message.getT() != null) {
-            Map<String, String> t = message.getT();
+            List<String> t = message.getT();
+            byte[] writeBytes = null;
+            byte[] bytes = null;
+            int value = Integer.valueOf(t.get(1));
+            Log.i("wmk", "设置的值" + t.get(1));
+            if (value < 0) {
+                int i = 65536 + value;
+                bytes = Utils.concatAll(writeRegisterPreByte2, Utils.intToBytes(i), writeRegisterBackByte);
+                writeBytes = Utils.getCommandBytes(t.get(0), writeRegisterPreByte, bytes);
+                Log.i("wmk", "负数设置" + Utils.bytesToHexString(writeBytes));
+            } else {
+                if (value > 65535) {
+                    byte[] bytes1 = Utils.intToBytes1(value);
+                    byte[] bytes2 = new byte[]{bytes1[0], bytes1[1]};
+                    byte[] bytes3 = new byte[]{bytes1[2], bytes1[3]};
 
-            for (Map.Entry<String, String> entry : t.entrySet()) {
-                switch (entry.getKey()) {
-                    case "D4000":
-                        int value = Integer.valueOf(entry.getValue());
-                        int i = 65536 - value;
-                        byte[] d4000s = Utils.getCommandBytes("D4000", writeRegisterPreByte, Utils.intToBytes(i));
-                        sendCommand(d4000s);
-                        return;
-                    case "D4002":
-                        String value1 = entry.getValue();
-                        return;
-                    case "D4004":
-                        String value2 = entry.getValue();
-                        return;
-                    case "D4006":
-
-                        return;
-                    case "D4008":
-
-                        return;
-                    case "D4010":
-
-                        return;
-                    case "D4012":
-
-                        return;
-                    case "D4014":
-
-                        return;
-                    case "D4020":
-
-                        return;
-                    case "D4022":
-
-                        return;
-                    case "D4024":
-
-                        return;
-                    case "D4026":
-
-                        return;
-                    case "D4210":
-
-                        return;
-                    case "D4211":
-
-                        return;
-                    case "D4212":
-
-                        return;
-                    case "D4213":
-
-                        return;
-                    case "D4200":
-                        return;
-                    case "D4205":
-                        return;
-                    case "D4202":
-                        return;
-                    case "D4100":
-                        return;
-                    case "D4102":
-                        return;
-                    case "D4104":
-                        return;
-                    case "D4106":
-                        return;
-                    case "D4116":
-                        return;
-                    case "D4108":
-                        return;
-                    case "D4110":
-                        return;
-                    case "D4112":
-                        return;
-                    case "D4114":
-                        return;
-                    case "D4118":
-                        return;
-
-
+                    bytes = Utils.concatAll(writeRegisterPreByte2, Utils.concatAll(bytes3, bytes2));
+                    Log.i("wmk", "正数大于65535设置" + Utils.bytesToHexString(Utils.intToBytes1(value)));
+                } else {
+                    bytes = Utils.concatAll(writeRegisterPreByte2, Utils.intToBytes(value), writeRegisterBackByte2);
                 }
+
+                writeBytes = Utils.getCommandBytes(t.get(0), writeRegisterPreByte, bytes);
+                Log.i("wmk", "正数设置" + Utils.bytesToHexString(writeBytes));
             }
+            sendCommand(writeBytes);
+
+
+        /*    int i = 65536 - value;
+            byte[] d4000s = Utils.getCommandBytes("D4000", writeRegisterPreByte, Utils.intToBytes(i));
+            Log.i("wmk","正数设置"+Utils.bytesToHexString(d4000s));
+            sendCommand(d4000s);*/
         }
     }
 

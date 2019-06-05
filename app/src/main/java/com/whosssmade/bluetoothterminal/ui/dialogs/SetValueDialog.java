@@ -17,7 +17,9 @@ import com.whosssmade.bluetoothterminal.model.constant.EventBusMessage;
 
 import org.simple.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -32,6 +34,7 @@ public class SetValueDialog extends Dialog {
 
     private Unbinder bind;
     private TextView mTextView;
+    private ArrayList<String> strings;
 
     public void setTextView(TextView mTextView) {
         this.mTextView = mTextView;
@@ -52,11 +55,14 @@ public class SetValueDialog extends Dialog {
 
         EventBus.getDefault().register(this);
 
+        strings = new ArrayList<>();
+
     }
 
     @Override
     public void show() {
         super.show();
+        strings.clear();
         editText.setText("");
     }
 
@@ -70,10 +76,13 @@ public class SetValueDialog extends Dialog {
                 String value = editText.getText().toString();
                 mTextView.setText(value);
                 String tag = (String) mTextView.getTag();
-                EventBusMessage<Map<String, String>> message = new EventBusMessage<>();
-                Map<String, String> stringMap = new HashMap<>();
-                stringMap.put(tag, value);
-                message.setT(stringMap);
+
+                strings.add(tag);
+                strings.add(value);
+
+                EventBusMessage<List<String>> message = new EventBusMessage<>();
+
+                message.setT(strings);
                 EventBus.getDefault().post(message, Constants.NEW_VALUE);
                 dismiss();
                 break;
