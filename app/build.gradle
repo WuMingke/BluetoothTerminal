@@ -11,9 +11,25 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    //3.0之后
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == "release") {
+            variant.outputs.all { output ->
+                def outputFile = output.outputFile
+                if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                    // apk_渠道名-版本号-版本名称-编译时间.apk
+                    def fileName = "bluetoothterminal-${buildType.name}${defaultConfig.versionCode}-v${defaultConfig.versionName}.apk"
+
+                    outputFileName = fileName
+                }
+            }
+        }
+
     }
 }
 

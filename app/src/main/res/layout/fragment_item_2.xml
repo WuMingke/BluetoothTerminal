@@ -198,7 +198,7 @@
                 android:background="@drawable/btn_bg"
                 android:gravity="center"
                 android:tag="M107"
-                android:text="横向仓料位"
+                android:text="横向料仓位"
                 android:textColor="@color/black" />
 
             <TextView

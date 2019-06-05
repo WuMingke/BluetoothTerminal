@@ -1,16 +1,21 @@
 package com.whosssmade.bluetoothterminal.ui.activities;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.whosssmade.bluetoothterminal.R;
@@ -57,6 +62,19 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
     @Override
     protected void initEventAndData() {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    1);
+        } else {
+            //  Log.i("tag","已申请权限");
+        }
+
+
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (!bluetoothAdapter.isEnabled()) {
             bluetoothAdapter.enable();
@@ -122,7 +140,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(Constants.DEVICE_BEAN, hasBondAdapter.getData().get(position));
             bluetoothAdapter.cancelDiscovery();
-           // unregisterReceiver(bluetoothDiscovery);
+            // unregisterReceiver(bluetoothDiscovery);
             startActivity(intent);
         }
 
@@ -160,6 +178,6 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     @Override
     protected void onDestroy() {
         super.onDestroy();
-       // unregisterReceiver(bluetoothDiscovery);
+        // unregisterReceiver(bluetoothDiscovery);
     }
 }

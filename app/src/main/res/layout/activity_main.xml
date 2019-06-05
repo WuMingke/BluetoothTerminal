@@ -24,8 +24,11 @@
             android:id="@+id/commandTitle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@id/back"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
             android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="查询"
             android:textColor="@color/white" />
 

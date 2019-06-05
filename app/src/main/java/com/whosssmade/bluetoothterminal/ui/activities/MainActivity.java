@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private InputStream mInputStream;
     private static final byte[] readPreByte = new byte[]{0x01, 0x01};
     private static final byte[] readBackByte = new byte[]{0x00, 0x01};
-    private static final byte[] readBackByte2 = new byte[]{0x00, 0x08};//M50-M57
+    private static final byte[] readBackByte2 = new byte[]{0x00, 0x08};//M54-M57
     private static final byte[] readBackByte3 = new byte[]{0x00, 0x04};
     private static final byte[] readBackByte4 = new byte[]{0x00, 0x02};
     private static final byte[] writePreByte = new byte[]{0x01, 0x05};
@@ -290,7 +290,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
             sendCommand(m50s);
             onUpClicked = true;
-          //  itemFragment1.getUp().setBackgroundResource(R.drawable.btn_click_down);
+            itemFragment1.getUp().setBackgroundResource(R.drawable.btn_click_down);
             BtnTag = "M51";
         } else {
             if (m50s1 == null) {
@@ -298,7 +298,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
             sendCommand(m50s1);
             onUpClicked = false;
-          //  itemFragment1.getUp().setBackgroundResource(R.drawable.btn_bg);
+            itemFragment1.getUp().setBackgroundResource(R.drawable.btn_bg);
         }
 
     }
@@ -311,7 +311,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
             sendCommand(m51s);
             onDownClicked = true;
-           // itemFragment1.getDown().setBackgroundResource(R.drawable.btn_click_down);
+            itemFragment1.getDown().setBackgroundResource(R.drawable.btn_click_down);
             BtnTag = "M50";
         } else {
             if (m51s1 == null) {
@@ -319,7 +319,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
             sendCommand(m51s1);
             onDownClicked = false;
-           // itemFragment1.getDown().setBackgroundResource(R.drawable.btn_bg);
+            itemFragment1.getDown().setBackgroundResource(R.drawable.btn_bg);
         }
 
     }
@@ -334,7 +334,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
             sendCommand(m52s);
             onForwardClicked = true;
-          //  itemFragment1.getForward().setBackgroundResource(R.drawable.btn_click_down);
+            itemFragment1.getForward().setBackgroundResource(R.drawable.btn_click_down);
             BtnTag = "M52";
         } else {
             if (m52s1 == null) {
@@ -342,7 +342,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
             sendCommand(m52s1);
             onForwardClicked = false;
-          //  itemFragment1.getForward().setBackgroundResource(R.drawable.btn_bg);
+            itemFragment1.getForward().setBackgroundResource(R.drawable.btn_bg);
         }
 
 
@@ -357,7 +357,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
             sendCommand(m53s);
             onBackClicked = true;
-        //    itemFragment1.getBack().setBackgroundResource(R.drawable.btn_click_down);
+            itemFragment1.getBack().setBackgroundResource(R.drawable.btn_click_down);
             BtnTag = "M53";
         } else {
             if (m53s1 == null) {
@@ -365,7 +365,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
             sendCommand(m53s1);
             onBackClicked = false;
-          //  itemFragment1.getBack().setBackgroundResource(R.drawable.btn_bg);
+            itemFragment1.getBack().setBackgroundResource(R.drawable.btn_bg);
         }
 
 
@@ -1103,8 +1103,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                loadingDialog.dismiss();
-                                showToast("已建立蓝牙连接");
+                                // loadingDialog.dismiss();
+                                showToast("已建立蓝牙连接，正在读取数据");
                             }
                         });
                         //单线程
@@ -1130,7 +1130,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                         d4200s = Utils.getCommandBytes("D4200", readRegisterPreByte, readRegisterBackByte6);
 
                         //读按钮
-                        m50s3 = Utils.getCommandBytes("M50", readPreByte, readBackByte2);
+                        m50s3 = Utils.getCommandBytes("M54", readPreByte, readBackByte2);
                         m58s3 = Utils.getCommandBytes("M58", readPreByte, readBackByte);
                         m100s3 = Utils.getCommandBytes("M100", readPreByte, readBackByte2);
                         m108s3 = Utils.getCommandBytes("M108", readPreByte, readBackByte3);
@@ -1165,7 +1165,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                             //计算数据  1176  67296-66976
 
                             if (bytes[1] == (byte) 0x03 && isReadD5002) {
-                                Log.i("wmk", "--读寄存器处理D5002--" + Utils.bytesToHexString(bytes));
+                                Log.i("wmk", "--读寄存器处理D5002--长度--" + bytes.length + "--" + Utils.bytesToHexString(bytes));
+                                if (bytes.length != 13) {
+                                    sendCommand(commandBytes);
+                                    continue;
+                                }
+
                                 byte[] dataByte = new byte[bytes.length - 5];
                                 for (int i = 0; i < dataByte.length; i++) {
                                     dataByte[i] = bytes[i + 3];
@@ -1176,7 +1181,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         itemByte[j] = dataByte[4 * i + j];
                                     }
                                     if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
-                                        readData = 65536 - Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]});
+                                        readData = Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]}) - 65536;
                                     } else {
 
                                         byte[] bytes2 = Utils.concatAll(new byte[]{itemByte[2], itemByte[3]}, new byte[]{itemByte[0], itemByte[1]});
@@ -1200,7 +1205,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                             }
 
                             if (bytes[1] == (byte) 0x03 && isReadD4000) {
-                                Log.i("wmk", "--读寄存器处理D4000--" + Utils.bytesToHexString(bytes));
+                                Log.i("wmk", "--读寄存器处理D4000--长度--" + bytes.length + "--" + Utils.bytesToHexString(bytes));
+                                if (bytes.length != 37) {
+                                    sendCommand(commandBytes);
+                                    continue;
+                                }
                                 byte[] dataByte = new byte[bytes.length - 5];
                                 for (int i = 0; i < dataByte.length; i++) {
                                     dataByte[i] = bytes[i + 3];
@@ -1211,7 +1220,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         itemByte[j] = dataByte[4 * i + j];
                                     }
                                     if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
-                                        readData = 65536 - Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]});
+                                        readData = Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]}) - 65536;
                                     } else {
                                         byte[] bytes2 = Utils.concatAll(new byte[]{itemByte[2], itemByte[3]}, new byte[]{itemByte[0], itemByte[1]});
                                         readData = Utils.bytesToInt2(bytes2);
@@ -1239,7 +1248,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                             }
 
                             if (bytes[1] == (byte) 0x03 && isReadD4100) {
-                                Log.i("wmk", "--读寄存器处理D4100--" + Utils.bytesToHexString(bytes));
+                                Log.i("wmk", "--读寄存器处理D4100--长度--" + bytes.length + "--" + Utils.bytesToHexString(bytes));
+                                if (bytes.length != 45) {
+                                    sendCommand(commandBytes);
+                                    continue;
+                                }
+
                                 byte[] dataByte = new byte[bytes.length - 5];
                                 for (int i = 0; i < dataByte.length; i++) {
                                     dataByte[i] = bytes[i + 3];
@@ -1250,7 +1264,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         itemByte[j] = dataByte[4 * i + j];
                                     }
                                     if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
-                                        readData = 65536 - Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]});
+                                        readData = Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]}) - 65536;
                                     } else {
                                         byte[] bytes2 = Utils.concatAll(new byte[]{itemByte[2], itemByte[3]}, new byte[]{itemByte[0], itemByte[1]});
                                         readData = Utils.bytesToInt2(bytes2);
@@ -1280,7 +1294,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                             }
 
                             if (bytes[1] == (byte) 0x03 && isReadD4020) {
-                                Log.i("wmk", "--读寄存器处理D4020--" + Utils.bytesToHexString(bytes));
+                                Log.i("wmk", "--读寄存器处理D4020--长度--" + bytes.length + "--" + Utils.bytesToHexString(bytes));
+                                if (bytes.length != 21) {
+                                    sendCommand(commandBytes);
+                                    continue;
+                                }
                                 byte[] dataByte = new byte[bytes.length - 5];
                                 for (int i = 0; i < dataByte.length; i++) {
                                     dataByte[i] = bytes[i + 3];
@@ -1291,7 +1309,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         itemByte[j] = dataByte[4 * i + j];
                                     }
                                     if (itemByte[2] == (byte) 0xff && itemByte[3] == (byte) 0xff) {
-                                        readData = 65536 - Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]});
+                                        readData = Utils.bytesToInt1(new byte[]{itemByte[0], itemByte[1]}) - 65536;
                                     } else {
                                         byte[] bytes2 = Utils.concatAll(new byte[]{itemByte[2], itemByte[3]}, new byte[]{itemByte[0], itemByte[1]});
                                         readData = Utils.bytesToInt2(bytes2);
@@ -1315,7 +1333,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                             }
 
                             if (bytes[1] == (byte) 0x03 && isReadD4210) {//数据只有一个点位
-                                Log.i("wmk", "--读寄存器处理D4210--" + Utils.bytesToHexString(bytes));
+                                Log.i("wmk", "--读寄存器处理D4210--长度--" + bytes.length + "--" + Utils.bytesToHexString(bytes));
+                                if (bytes.length != 13) {
+                                    sendCommand(commandBytes);
+                                    continue;
+                                }
                                 //  01 03 08    00 01 00 01 00 01 00 01   28 d7
                                 byte[] dataByte = new byte[bytes.length - 5];
                                 for (int i = 0; i < dataByte.length; i++) {
@@ -1345,7 +1367,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                             }
 
                             if (bytes[1] == (byte) 0x03 && isReadD4200) {
-                                Log.i("wmk", "--读寄存器处理D4200--" + Utils.bytesToHexString(bytes));
+                                Log.i("wmk", "--读寄存器处理D4200--长度--" + bytes.length + "--" + Utils.bytesToHexString(bytes));
+                                if (bytes.length != 21) {
+                                    sendCommand(commandBytes);
+                                    continue;
+                                }
                                 //00 00    00 01   0f a0    00 00    00 00    d0 90       00 03 00 00
                                 //                  4000                      53392
                                 byte[] dataByte = new byte[bytes.length - 5];
@@ -1356,15 +1382,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
                                 if (dataByte[6] == (byte) 0xff && dataByte[7] == (byte) 0xff) {
 
-                                    finalData.add(65536 -
-                                            Utils.bytesToInt1(new byte[]{dataByte[4], dataByte[5]}));
+                                    finalData.add(
+                                            Utils.bytesToInt1(new byte[]{dataByte[4], dataByte[5]}) - 65536);
                                 } else {
                                     byte[] bytes2 = Utils.concatAll(new byte[]{dataByte[6], dataByte[7]}, new byte[]{dataByte[4], dataByte[5]});
                                     finalData.add(Utils.bytesToInt2(bytes2));
                                 }
                                 if (dataByte[12] == (byte) 0xff && dataByte[13] == (byte) 0xff) {
-                                    finalData.add(65536 -
-                                            Utils.bytesToInt1(new byte[]{dataByte[10], dataByte[11]}));
+                                    finalData.add(
+                                            Utils.bytesToInt1(new byte[]{dataByte[10], dataByte[11]}) - 65536);
                                 } else {
                                     byte[] bytes2 = Utils.concatAll(new byte[]{dataByte[12], dataByte[13]}, new byte[]{dataByte[10], dataByte[11]});
                                     finalData.add(Utils.bytesToInt2(bytes2));
@@ -1376,8 +1402,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                     public void run() {
                                         isReadD4200 = false;
                                         itemFragment1.getEntrepot().setText(String.valueOf(finalData.get(0)));
-                                        itemFragment1.getBottom_pulse().setText(String.valueOf(finalData.get(1)));
-                                        itemFragment1.getThickness_pulse().setText(String.valueOf(finalData.get(2)));
+                                        itemFragment1.getThickness_pulse().setText(String.valueOf(finalData.get(1)));
+                                        itemFragment1.getBottom_pulse().setText(String.valueOf(finalData.get(2)));
                                         finalData.clear();
                                         isFirstCheckBtn = true;
                                         sendCommand(m50s3);
@@ -1721,6 +1747,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                             onOut_outClicked = true;
                                         }
                                         sendCommand(m121s3);
+
                                         isSeventhCheckBtn = true;
                                     }
                                 });
@@ -1810,6 +1837,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                             itemFragment3.getBtn_reset().setBackgroundResource(R.drawable.btn_click_down);
                                             onBtn_resetClicked = true;
                                         }
+                                        loadingDialog.dismiss();
                                     }
                                 });
                             }

@@ -123,16 +123,16 @@ public class ItemFragment1 extends BaseFragment<ItemPresenter1> implements ItemC
     TextView thickness_pulse;
 
     @BindView(R.id.up)
-    TextView up;
+    Button up;
 
     @BindView(R.id.down)
-    TextView down;
+    Button down;
 
     @BindView(R.id.forward)
-    TextView forward;
+    Button forward;
 
     @BindView(R.id.back)
-    TextView back;
+    Button back;
 
     @BindView(R.id.rotation1)
     TextView rotation1;
@@ -146,19 +146,19 @@ public class ItemFragment1 extends BaseFragment<ItemPresenter1> implements ItemC
     @BindView(R.id.close)
     TextView close;
 
-    public TextView getUp() {
+    public Button getUp() {
         return up;
     }
 
-    public TextView getDown() {
+    public Button getDown() {
         return down;
     }
 
-    public TextView getForward() {
+    public Button getForward() {
         return forward;
     }
 
-    public TextView getBack() {
+    public Button getBack() {
         return back;
     }
 
