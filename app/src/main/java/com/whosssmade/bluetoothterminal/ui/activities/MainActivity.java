@@ -269,6 +269,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private byte[] m10s3;
     private boolean isNinthCheckBtn;
     private byte[] m130s3;
+    private boolean isCheckDataAgain;
 
 
     /**
@@ -1407,6 +1408,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                         finalData.clear();
                                         isFirstCheckBtn = true;
                                         sendCommand(m50s3);
+                                        if (isCheckDataAgain) {
+                                            isCheckDataAgain = false;
+                                            if (loadingDialog != null) {
+                                                loadingDialog.dismiss();
+                                            }
+                                        }
                                         Log.i("wmk", "--m50s3--" + Utils.bytesToHexString(m50s3));
                                     }
                                 });
@@ -1837,7 +1844,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                                             itemFragment3.getBtn_reset().setBackgroundResource(R.drawable.btn_click_down);
                                             onBtn_resetClicked = true;
                                         }
-                                        loadingDialog.dismiss();
+                                        if (loadingDialog != null) {
+                                            loadingDialog.dismiss();
+                                        }
+
+
                                     }
                                 });
                             }
@@ -2485,6 +2496,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 viewpager.setCurrentItem(2);
                 break;
             case R.id.commandTitle:
+                if (loadingDialog == null) {
+                    loadingDialog = new LoadingDialog(this);
+                }
+                isCheckDataAgain = true;
+                loadingDialog.getTextView().setText("正在查询，请稍等...");
+                loadingDialog.show();
+
                 sendCommand(d5002s);
                 isReadD5002 = true;
                 break;
